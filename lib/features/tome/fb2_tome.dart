@@ -4,7 +4,7 @@ import 'package:bsr/features/tome/tome.dart';
 import 'package:fb2_parse/fb2_parse.dart';
 import 'package:image/image.dart';
 
-class FB2Tome extends AbstractTome {
+class FB2Tome extends Tome {
   FB2Tome(this.filePath);
 
   final String filePath;

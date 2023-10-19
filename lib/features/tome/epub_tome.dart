@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:bsr/features/tome/tome.dart';
 import 'package:epubx/epubx.dart';
 
-class EpubTome extends AbstractTome {
+class EpubTome extends Tome {
   EpubTome(this.filePath);
 
   final String filePath;

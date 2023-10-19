@@ -1,4 +1,4 @@
-import 'package:bsr/features/tome/tome.dart';
+import 'package:bsr/features/tome/epub_tome.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
