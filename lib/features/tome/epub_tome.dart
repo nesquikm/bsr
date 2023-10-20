@@ -11,9 +11,14 @@ class EpubTome extends Tome {
   late final TomeInfo _tomeInfo;
   late final Image? _coverImage;
   bool _coverImageCached = false;
+  bool _isOpen = false;
 
   @override
   Future<void> open() async {
+    if (_isOpen) {
+      return;
+    }
+
     final file = File(filePath);
     final bytes = await file.readAsBytes();
     _epubBookRef = await EpubReader.openBook(bytes);
@@ -29,6 +34,8 @@ class EpubTome extends Tome {
           )
           .toList(),
     );
+
+    _isOpen = true;
   }
 
   @override

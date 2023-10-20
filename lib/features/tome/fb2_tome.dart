@@ -12,9 +12,14 @@ class FB2Tome extends Tome {
   late final TomeInfo _tomeInfo;
   late final Image? _coverImage;
   bool _coverImageCached = false;
+  bool _isOpen = false;
 
   @override
   Future<void> open() async {
+    if (_isOpen) {
+      return;
+    }
+
     _fb2Book = FB2Book(filePath);
     await _fb2Book.parse();
 
@@ -32,6 +37,8 @@ class FB2Tome extends Tome {
       title: _fb2Book.description.bookTitle,
       authors: authors,
     );
+
+    _isOpen = true;
   }
 
   @override

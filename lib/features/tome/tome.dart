@@ -10,19 +10,23 @@ abstract class Tome {
   factory Tome.fromFile(String filePath) {
     final filePathLower = filePath.toLowerCase();
 
-    if (_hasExtension(filePathLower, epubExtensions)) {
+    if (_hasExtension(filePathLower, _epubExtensions)) {
       return EpubTome(filePath);
     }
 
-    if (_hasExtension(filePathLower, fb2Extensions)) {
+    if (_hasExtension(filePathLower, _fb2Extensions)) {
       return FB2Tome(filePath);
     }
 
     throw Exception('Unsupported book format');
   }
 
-  static final epubExtensions = ['.epub'];
-  static final fb2Extensions = ['.fb2', '.fb2.zip', '.fbz'];
+  static List<String> supportedExtensions() {
+    return _epubExtensions + _fb2Extensions;
+  }
+
+  static final _epubExtensions = ['.epub'];
+  static final _fb2Extensions = ['.fb2', '.fb2.zip', '.fbz'];
 
   static bool _hasExtension(String filePath, List<String> extensions) {
     final filePathLower = filePath.toLowerCase();
