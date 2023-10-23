@@ -16,28 +16,6 @@ dependencies:
   fancy_logger:
 ```
 
-## Basic usage 🛠
-
-Setup DI:
-
-```dart
-@InjectableInit(
-  externalPackageModulesBefore: [
-    ExternalModule(FancyLoggerPackageModule),
-  ],
-)
-void configureDependencies() => getIt.init();
-```
-
-Init:
-
-```dart
-Future<void> configureLogger() async {
-  final fancyLogger = inject<FancyLogger>();
-  await fancyLogger.init({Level.ALL: 100});
-}
-```
-
 ## Melos magic 🪄
 
 Using [melos](https://melos.invertase.dev/) makes it very easy to work with the project, so enjoy.
