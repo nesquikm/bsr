@@ -24,10 +24,32 @@ scripts:
 
   codegen:locale:
     description: Generate localizations code for all packages (easy_localization)
-    exec: dart run easy_localization:generate  --source-dir assets/translations -f keys --output-file locale_keys.g.dart && dart format lib/generated/locale_keys.g.dart
+    exec: dart run easy_localization:generate --source-dir assets/translations -f keys --output-file locale_keys.g.dart && dart format lib/generated/locale_keys.g.dart
     failFast: true
     packageFilters:
       dependsOn: "easy_localization"
+
+  analyze:
+    description: Analyze all packages and run dart_code_metrics for the main app
+    run: melos run check-format --no-select && melos run analyze_subpackages && melos run analyze:subpackages_custom_lint --no-select
+    failFast: true
+
+  analyze:subpackages:
+    description: Analyze a specific package in this project.
+    exec: flutter analyze .
+    failFast: true
+
+  analyze:subpackages_custom_lint:
+    description: Analyze a specific package in this project.
+    exec: dart run custom_lint
+    failFast: true
+    packageFilters:
+      dependsOn: "custom_lint"
+
+  check-format:
+    description: Check the format of a specific package in this project.
+    exec: dart format --set-exit-if-changed .
+    failFast: true
 
   test:
     description: Run all Dart & Flutter tests in this project.
