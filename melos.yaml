@@ -31,15 +31,15 @@ scripts:
 
   analyze:
     description: Analyze all packages and run dart_code_metrics for the main app
-    run: melos run check-format --no-select && melos run analyze_subpackages && melos run analyze:subpackages_custom_lint --no-select
+    run: melos run check-format --no-select && melos run analyze:flutter && melos run analyze:custom_lint --no-select
     failFast: true
 
-  analyze:subpackages:
+  analyze:flutter:
     description: Analyze a specific package in this project.
     exec: flutter analyze .
     failFast: true
 
-  analyze:subpackages_custom_lint:
+  analyze:custom_lint:
     description: Analyze a specific package in this project.
     exec: dart run custom_lint
     failFast: true
@@ -75,8 +75,6 @@ scripts:
 
   test:integration:
     description: Run Flutter teintegration teststs for a specific package in this project.
-    # TODO(nesquikm): Maybe we should separate integration_test for the app and packages
-    # because packages may not use flavors at all
     exec: "flutter test --flavor production integration_test"
     concurrency: 1
     failFast: true
