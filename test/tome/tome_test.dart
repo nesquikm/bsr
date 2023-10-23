@@ -28,5 +28,12 @@ void main() {
       expect(tome, isNotNull);
       expect(tome, isInstanceOf<FB2Tome>());
     });
+
+    test('Throws FormatException for unsupported file', () {
+      expect(
+        () => Tome.fromFile('test/test_tomes/unsupported.format'),
+        throwsFormatException,
+      );
+    });
   });
 }

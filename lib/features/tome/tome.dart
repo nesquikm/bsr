@@ -24,8 +24,7 @@ abstract class Tome {
     if (_hasExtension(filePathLower, _fb2Extensions)) {
       return FB2Tome(filePath);
     }
-
-    throw Exception('Unsupported book format');
+    throw FormatException('Unsupported book format', filePath);
   }
 
   final String filePath;
