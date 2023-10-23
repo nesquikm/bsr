@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bsr/features/cached_tome/cached_tome.dart';
@@ -28,6 +29,7 @@ class TomeList {
         final tome = _cachedTomes[id] ?? CachedTome(tomeDirectoryPath);
         await tome.open();
         newTomes[id] = tome;
+        await tome.close();
       } catch (_) {
         await remove(id);
       }

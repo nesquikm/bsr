@@ -93,4 +93,8 @@ class CachedTome {
 
   TomeInfo get tomeInfo => _tomeInfo;
   String? get coverImagePath => _tomeCoverImageFilepath;
+
+  Future<void> close() async {
+    await _tome.close();
+  }
 }

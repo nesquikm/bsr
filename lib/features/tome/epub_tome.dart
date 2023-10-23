@@ -6,7 +6,7 @@ import 'package:epubx/epubx.dart';
 class EpubTome extends Tome {
   EpubTome(super.filePath);
 
-  late final EpubBookRef _epubBookRef;
+  EpubBookRef? _epubBookRef;
   late final TomeInfo _tomeInfo;
   late final Image? _coverImage;
   bool _coverImageCached = false;
@@ -23,11 +23,12 @@ class EpubTome extends Tome {
     _epubBookRef = await EpubReader.openBook(bytes);
 
     _tomeInfo = TomeInfo(
-      author: _epubBookRef.Author,
-      title: _epubBookRef.Title,
-      authors: _epubBookRef.AuthorList?.where(
-        (author) => author != null,
-      )
+      author: _epubBookRef!.Author,
+      title: _epubBookRef!.Title,
+      authors: _epubBookRef!.AuthorList
+          ?.where(
+            (author) => author != null,
+          )
           .map(
             (e) => e!,
           )
@@ -46,8 +47,16 @@ class EpubTome extends Tome {
       return _coverImage;
     }
 
-    _coverImage = await _epubBookRef.readCover();
+    await open();
+
+    _coverImage = await _epubBookRef!.readCover();
     _coverImageCached = true;
     return _coverImage;
+  }
+
+  @override
+  Future<void> close() async {
+    _isOpen = false;
+    _epubBookRef = null;
   }
 }

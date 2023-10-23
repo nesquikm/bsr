@@ -49,6 +49,7 @@ abstract class Tome {
   }
 
   Future<void> open();
+  Future<void> close();
   TomeInfo get tomeInfo;
   Future<Image?> get coverImage;
 
