@@ -26,5 +26,25 @@ void main() {
       expect((await tome!.coverImage)!.width, 396);
       expect((await tome!.coverImage)!.height, 612);
     });
+
+    test('Calc digest', () async {
+      final tome = EpubTome('test/test_tomes/digest_test.txt');
+      expect(
+        await tome.calcDigest(),
+        'ce4e62b68ae006cf657c05b189594996b879f3eb52215d74647d293f6d81c5d9',
+      );
+      expect(
+        await tome.calcDigest(chunkSize: 1),
+        'ce4e62b68ae006cf657c05b189594996b879f3eb52215d74647d293f6d81c5d9',
+      );
+      expect(
+        await tome.calcDigest(chunkSize: 2),
+        'ce4e62b68ae006cf657c05b189594996b879f3eb52215d74647d293f6d81c5d9',
+      );
+      expect(
+        await tome.calcDigest(chunkSize: 1024 * 1024),
+        'ce4e62b68ae006cf657c05b189594996b879f3eb52215d74647d293f6d81c5d9',
+      );
+    });
   });
 }

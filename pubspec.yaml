@@ -7,7 +7,11 @@ environment:
   sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
+  archive: ^3.4.6
+  async: ^2.11.0
   bloc: ^8.1.2
+  convert: ^3.1.1
+  crypto: ^3.0.3
   epubx:
     path: ../epubx.dart
   fb2_parse:
@@ -24,7 +28,6 @@ dependencies:
   json_annotation: ^4.8.1
   path: ^1.8.3
   riverpod_annotation: ^2.2.1
-  uuid: ^4.1.0
 
 dev_dependencies:
   bloc_test: ^9.1.4

@@ -1,13 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:archive/archive.dart';
+import 'package:archive/archive_io.dart';
 import 'package:bsr/features/tome/tome.dart';
+import 'package:crypto/crypto.dart';
 import 'package:fb2_parse/fb2_parse.dart';
 import 'package:image/image.dart';
 
 class FB2Tome extends Tome {
-  FB2Tome(this.filePath);
+  FB2Tome(super.filePath);
 
-  final String filePath;
   late final FB2Book _fb2Book;
   late final TomeInfo _tomeInfo;
   late final Image? _coverImage;
@@ -64,5 +67,23 @@ class FB2Tome extends Tome {
     final image = decodeImage(bytes);
 
     return image;
+  }
+
+  @override
+  Future<String> calcDigest({int chunkSize = Tome.defaultChunkSize}) async {
+    final pathLower = filePath.toLowerCase();
+    if (!pathLower.endsWith('.fbz') && !pathLower.endsWith('.fb2.zip')) {
+      return super.calcDigest(chunkSize: chunkSize);
+    }
+
+    final inputStream = InputFileStream(filePath);
+    final archive = ZipDecoder().decodeBuffer(inputStream);
+    final compressed = archive.files
+        .firstWhere((file) => file.name.toLowerCase().endsWith('.fb2'));
+    final decopressed = compressed.content as List<int>;
+    final output = sha256.convert(decopressed);
+    await inputStream.close();
+
+    return output.toString();
   }
 }

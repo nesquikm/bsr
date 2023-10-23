@@ -1,11 +1,18 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:async/async.dart';
 import 'package:bsr/features/tome/epub_tome.dart';
 import 'package:bsr/features/tome/fb2_tome.dart';
-import 'package:bsr/features/tome/tome_info.dart';
+import 'package:bsr/features/tome/tome.dart';
+import 'package:convert/convert.dart';
+import 'package:crypto/crypto.dart';
 import 'package:image/image.dart';
+
 export 'tome_info.dart';
 
 abstract class Tome {
-  Tome();
+  Tome(this.filePath);
 
   factory Tome.fromFile(String filePath) {
     final filePathLower = filePath.toLowerCase();
@@ -20,6 +27,10 @@ abstract class Tome {
 
     throw Exception('Unsupported book format');
   }
+
+  final String filePath;
+
+  static const defaultChunkSize = 512 * 1024;
 
   static List<String> supportedExtensions() {
     return _epubExtensions + _fb2Extensions;
@@ -41,4 +52,25 @@ abstract class Tome {
   Future<void> open();
   TomeInfo get tomeInfo;
   Future<Image?> get coverImage;
+
+  Future<String> calcDigest({int chunkSize = Tome.defaultChunkSize}) async {
+    final file = File(filePath);
+    final reader = ChunkedStreamReader(file.openRead());
+
+    final output = AccumulatorSink<Digest>();
+    final input = sha256.startChunkedConversion(output);
+
+    try {
+      Uint8List bytes;
+      do {
+        bytes = await reader.readBytes(chunkSize);
+        input.add(bytes);
+      } while (bytes.length == chunkSize);
+    } finally {
+      input.close();
+      await reader.cancel();
+    }
+
+    return output.events.single.toString();
+  }
 }

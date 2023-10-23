@@ -4,9 +4,8 @@ import 'package:bsr/features/tome/tome.dart';
 import 'package:epubx/epubx.dart';
 
 class EpubTome extends Tome {
-  EpubTome(this.filePath);
+  EpubTome(super.filePath);
 
-  final String filePath;
   late final EpubBookRef _epubBookRef;
   late final TomeInfo _tomeInfo;
   late final Image? _coverImage;

@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:bsr/features/cached_tome/cached_tome.dart';
+import 'package:bsr/features/tome/tome.dart';
 import 'package:path/path.dart';
-import 'package:uuid/uuid.dart';
 
 class TomeList {
   TomeList(this.directoryPath);
@@ -10,8 +10,6 @@ class TomeList {
   final String directoryPath;
 
   final Map<String, CachedTome> _cachedTomes = {};
-
-  static const _uuid = Uuid();
 
   Future<void> refresh() async {
     final listDir = Directory(directoryPath);
@@ -41,7 +39,8 @@ class TomeList {
   }
 
   Future<String> addFile(String filePath) async {
-    final id = _uuid.v4();
+    final tome = Tome.fromFile(filePath);
+    final id = await tome.calcDigest();
     final tomeDirectoryPath = join(directoryPath, id);
     await Directory(tomeDirectoryPath).create(recursive: true);
     final tomeFilePath = join(
