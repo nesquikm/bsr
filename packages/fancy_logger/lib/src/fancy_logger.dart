@@ -5,13 +5,11 @@ import 'package:fancy_logger/src/abstract_logger.dart';
 import 'package:fancy_logger/src/console_logger.dart';
 import 'package:fancy_logger/src/db_logger.dart';
 import 'package:flutter/foundation.dart';
-import 'package:injectable/injectable.dart';
 import 'package:logging/logging.dart';
 
 /// {@template fancy_logger}
 /// Fancy logger
 /// {@endtemplate}
-@singleton
 class FancyLogger {
   /// {@macro fancy_logger}
   FancyLogger();
