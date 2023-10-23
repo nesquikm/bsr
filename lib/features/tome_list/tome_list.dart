@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:bsr/features/cached_tome/cached_tome.dart';
 import 'package:bsr/features/tome/tome.dart';
+import 'package:bsr/features/tome_list/exceptions.dart';
 import 'package:path/path.dart';
+export 'exceptions.dart';
 
 class TomeList {
   TomeList(this.directoryPath);
@@ -39,8 +41,15 @@ class TomeList {
   }
 
   Future<String> addFile(String filePath) async {
+    await refresh();
+
     final tome = Tome.fromFile(filePath);
     final id = await tome.calcDigest();
+
+    if (_cachedTomes.keys.contains(id)) {
+      throw DuplicateTomeException('Book already exists');
+    }
+
     final tomeDirectoryPath = join(directoryPath, id);
     await Directory(tomeDirectoryPath).create(recursive: true);
     final tomeFilePath = join(

@@ -176,5 +176,19 @@ void main() {
       final tomeDirs = listDir.list();
       expect(await tomeDirs.isEmpty, true);
     });
+
+    test('Throws DuplicateTome exception', () async {
+      final ids = <String>[];
+
+      final tomeList = TomeList(getTomeListPath());
+
+      ids.add(await tomeList.addFile('test/test_tomes/a_novel.fb2'));
+      await expectLater(
+        () async => tomeList.addFile('test/test_tomes/a_novel.fb2.zip'),
+        throwsA(isA<DuplicateTomeException>()),
+      );
+
+      expect(tomeList.cachedTomes.length, 1);
+    });
   });
 }
