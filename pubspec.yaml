@@ -41,6 +41,7 @@ dev_dependencies:
     sdk: flutter
   freezed: ^2.4.5
   json_serializable: ^6.7.1
+  melos: ^3.1.1
   mocktail: ^1.0.0
   riverpod_generator: ^2.3.3
   riverpod_lint: ^2.1.1
