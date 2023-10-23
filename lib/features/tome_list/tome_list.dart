@@ -22,14 +22,20 @@ class TomeList {
     final newTomes = <String, CachedTome>{};
     final openFutureList = <Future<void>>[];
 
+    Future<void> openTome(String tomeDirectoryPath) async {
+      final id = basename(tomeDirectoryPath);
+      try {
+        final tome = _cachedTomes[id] ?? CachedTome(tomeDirectoryPath);
+        await tome.open();
+        newTomes[id] = tome;
+      } catch (_) {
+        await remove(id);
+      }
+    }
+
     await tomeDirs.forEach(
       (dir) {
-        final id = basename(dir.path);
-        final tome = _cachedTomes[id] ?? CachedTome(dir.path);
-        newTomes[id] = tome;
-
-        final openFuture = tome.open();
-        openFutureList.add(openFuture);
+        openFutureList.add(openTome(dir.path));
       },
     );
 

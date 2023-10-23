@@ -190,5 +190,58 @@ void main() {
 
       expect(tomeList.cachedTomes.length, 1);
     });
+
+    test('Open directory with two tome, one broken', () async {
+      const ids = ['test_id_0', 'test_id_1'];
+
+      final tomePaths = ids
+          .map(
+            (id) => join(
+              getTomeListPath(),
+              id,
+            ),
+          )
+          .toList();
+
+      for (final tomePath in tomePaths) {
+        await Directory(tomePath).create(
+          recursive: true,
+        );
+      }
+
+      final srcFiles = [
+        File('test/test_tomes/a_novel.epub'),
+        File('test/test_tomes/unsupported.format'),
+      ];
+
+      var index = 0;
+      final dstFilePaths = srcFiles.map(
+        (srcFile) {
+          return File(
+            join(
+              tomePaths[index++],
+              '${CachedTome.tomeFilename}.epub',
+            ),
+          );
+        },
+      ).toList();
+
+      index = 0;
+      for (final srcFile in srcFiles) {
+        final dstFilePath = dstFilePaths[index++];
+        srcFile.copySync(dstFilePath.path);
+      }
+
+      final listDir = Directory(getTomeListPath());
+      expect(await listDir.list().length, 2);
+
+      final tomeList = TomeList(getTomeListPath());
+      await tomeList.refresh();
+
+      expect(tomeList.cachedTomes.length, 1);
+      expect(tomeList.cachedTomes[ids[0]]!.tomeInfo.title, 'A Novel');
+
+      expect(await listDir.list().length, 1);
+    });
   });
 }
