@@ -1,4 +1,4 @@
-import 'package:bsr/counter/counter.dart';
+import 'package:bsr/features/library/library.dart';
 import 'package:bsr/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,7 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const CounterPage(),
+      home: const LibraryPage(),
     );
   }
 }
