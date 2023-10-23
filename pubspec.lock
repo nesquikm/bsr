@@ -260,9 +260,11 @@ packages:
   epubx:
     dependency: "direct main"
     description:
-      path: "../epubx.dart"
-      relative: true
-    source: path
+      path: "."
+      ref: dev
+      resolved-ref: b80a95bcd7bb3b3b11a2ad63acb613a0710b4700
+      url: "git@github.com:nesquikm/epubx.dart.git"
+    source: git
     version: "4.0.0"
   fake_async:
     dependency: transitive
@@ -275,9 +277,11 @@ packages:
   fb2_parse:
     dependency: "direct main"
     description:
-      path: "../fb2_parse"
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: e103361cf1d4cf7c5da89e4a574e35b892b35577
+      url: "git@github.com:nesquikm/fb2_parse.git"
+    source: git
     version: "1.0.1"
   file:
     dependency: transitive

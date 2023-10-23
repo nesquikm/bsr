@@ -13,9 +13,13 @@ dependencies:
   convert: ^3.1.1
   crypto: ^3.0.3
   epubx:
-    path: ../epubx.dart
+    git:
+      url: git@github.com:nesquikm/epubx.dart.git
+      ref: dev
   fb2_parse:
-    path: ../fb2_parse
+    git:
+      url: git@github.com:nesquikm/fb2_parse.git
+      ref: main
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
