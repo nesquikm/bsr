@@ -43,7 +43,7 @@ dev_dependencies:
   json_serializable: ^6.7.1
   melos: ^3.1.1
   mocktail: ^1.0.0
-  riverpod_generator: ^2.3.3
+  riverpod_generator: ^2.3.5
   riverpod_lint: ^2.1.1
   very_good_analysis: ^5.1.0
 
