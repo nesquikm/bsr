@@ -1,11 +1,15 @@
 import 'dart:io';
 
+import 'package:bsr/features/library/library.dart';
 import 'package:bsr/features/library/tome_list/cached_tome/cached_tome.dart';
-import 'package:bsr/features/library/tome_list/tome_list.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart';
+import 'package:riverpod/riverpod.dart';
+
+import '../helpers/helpers.dart';
 
 void main() {
+  ProviderContainer? container;
   group('TomeList', () {
     String getTomeListPath() {
       return join(Directory.systemTemp.path, 'bsr_test_tome_list');
@@ -18,7 +22,7 @@ void main() {
       }
     }
 
-    void deleteTimeListDirectory() {
+    void deleteTomeListDirectory() {
       final tomeListPath = getTomeListPath();
       if (Directory(tomeListPath).existsSync()) {
         Directory(tomeListPath).deleteSync(recursive: true);
@@ -26,32 +30,93 @@ void main() {
     }
 
     setUp(() async {
+      container = createContainer();
       createTomeListDirectory();
     });
 
     tearDown(() async {
-      deleteTimeListDirectory();
+      container?.dispose();
+      container = null;
+      deleteTomeListDirectory();
     });
 
-    test('Instantiate TomeList', () {
-      final tomeList = TomeList(getTomeListPath());
-      expect(tomeList, isNotNull);
+    Future<void> expectEmpty() async {
+      await expectLater(
+        container!.read(tomeListProvider.future),
+        completion(
+          {},
+        ),
+      );
+    }
+
+    Future<void> expectOneTome(
+      String id,
+      String title,
+    ) async {
+      await expectLater(
+        container!.read(tomeListProvider.future),
+        completion(
+          (Map<String, CachedTome> res) =>
+              res.length == 1 && res[id]!.tomeInfo.title == title,
+        ),
+      );
+    }
+
+    Future<void> expectTwoTomes(
+      String id0,
+      String title0,
+      String id1,
+      String title1,
+    ) async {
+      await expectLater(
+        container!.read(tomeListProvider.future),
+        completion(
+          (Map<String, CachedTome> res) =>
+              res.length == 2 &&
+              res[id0]!.tomeInfo.title == title0 &&
+              res[id1]!.tomeInfo.title == title1,
+        ),
+      );
+    }
+
+    Future<void> setDirectory() async {
+      await container!.read(tomeListProvider.notifier).setDirectory(
+            getTomeListPath(),
+          );
+    }
+
+    Future<String> addFile(String filePath) async {
+      return container!.read(tomeListProvider.notifier).addFile(
+            filePath,
+          );
+    }
+
+    Future<void> remove(String id) async {
+      await container!.read(tomeListProvider.notifier).remove(
+            id,
+          );
+    }
+
+    Future<void> clear() async {
+      await container!.read(tomeListProvider.notifier).clear();
+    }
+
+    test('Instantiate Tomes', () async {
+      await expectEmpty();
     });
 
     test('Open empy directory', () async {
-      final tomeList = TomeList(getTomeListPath());
-      await tomeList.refresh();
+      await setDirectory();
 
-      expect(tomeList.cachedTomes.isEmpty, true);
+      await expectEmpty();
     });
 
     test('Open non-existent directory', () async {
-      deleteTimeListDirectory();
+      deleteTomeListDirectory();
 
-      final tomeList = TomeList(getTomeListPath());
-      await tomeList.refresh();
+      await setDirectory();
 
-      expect(tomeList.cachedTomes.isEmpty, true);
+      await expectEmpty();
     });
 
     test('Open directory with one tome', () async {
@@ -70,14 +135,12 @@ void main() {
       final dstFilePath = join(tomePath, '${CachedTome.tomeFilename}.fb2');
       srcFile.copySync(dstFilePath);
 
-      final tomeList = TomeList(getTomeListPath());
-      await tomeList.refresh();
+      await setDirectory();
 
-      expect(tomeList.cachedTomes.length, 1);
-      expect(tomeList.cachedTomes[id]!.tomeInfo.title, 'A Novel');
+      await expectOneTome(id, 'A Novel');
     });
 
-    test('Open directory with two tome, remove one', () async {
+    test('Open directory with two tomes, remove one', () async {
       const ids = ['test_id_0', 'test_id_1'];
 
       final tomePaths = ids
@@ -117,60 +180,52 @@ void main() {
         final dstFilePath = dstFilePaths[index++];
         srcFile.copySync(dstFilePath.path);
       }
-      final tomeList = TomeList(getTomeListPath());
-      await tomeList.refresh();
 
-      expect(tomeList.cachedTomes.length, 2);
-      expect(tomeList.cachedTomes[ids[0]]!.tomeInfo.title, 'A Novel');
-      expect(tomeList.cachedTomes[ids[1]]!.tomeInfo.title, 'Another novel');
+      await setDirectory();
 
-      await tomeList.remove(ids[0]);
+      await expectTwoTomes(ids[0], 'A Novel', ids[1], 'Another novel');
 
-      expect(tomeList.cachedTomes.length, 1);
-      expect(tomeList.cachedTomes[ids[1]]!.tomeInfo.title, 'Another novel');
+      await remove(ids[0]);
+
+      await expectOneTome(ids[1], 'Another novel');
     });
 
     test('Open empy directory, add two files, remove one', () async {
       final ids = <String>[];
 
-      final tomeList = TomeList(getTomeListPath());
-      await tomeList.refresh();
+      await setDirectory();
 
-      expect(tomeList.cachedTomes.isEmpty, true);
+      await expectEmpty();
 
-      ids.add(await tomeList.addFile('test/test_tomes/a_novel.epub'));
+      ids.add(await addFile('test/test_tomes/a_novel.epub'));
 
-      expect(tomeList.cachedTomes.length, 1);
+      await expectOneTome(ids[0], 'A Novel');
 
-      ids.add(await tomeList.addFile('test/test_tomes/another_novel.epub'));
+      ids.add(await addFile('test/test_tomes/another_novel.epub'));
 
-      expect(tomeList.cachedTomes.length, 2);
+      await expectTwoTomes(ids[0], 'A Novel', ids[1], 'Another novel');
 
-      expect(tomeList.cachedTomes[ids[0]]!.tomeInfo.title, 'A Novel');
-      expect(tomeList.cachedTomes[ids[1]]!.tomeInfo.title, 'Another novel');
+      await remove(ids[0]);
 
-      await tomeList.remove(ids[0]);
-      expect(tomeList.cachedTomes.length, 1);
-      expect(tomeList.cachedTomes[ids[1]]!.tomeInfo.title, 'Another novel');
+      await expectOneTome(ids[1], 'Another novel');
     });
 
     test('Open empy directory, add two files, clear', () async {
       final ids = <String>[];
 
-      final tomeList = TomeList(getTomeListPath());
-      await tomeList.refresh();
+      await setDirectory();
 
-      expect(tomeList.cachedTomes.isEmpty, true);
+      await expectEmpty();
 
       ids
-        ..add(await tomeList.addFile('test/test_tomes/a_novel.epub'))
-        ..add(await tomeList.addFile('test/test_tomes/another_novel.epub'));
+        ..add(await addFile('test/test_tomes/a_novel.epub'))
+        ..add(await addFile('test/test_tomes/another_novel.epub'));
 
-      expect(tomeList.cachedTomes.length, 2);
+      await expectTwoTomes(ids[0], 'A Novel', ids[1], 'Another novel');
 
-      await tomeList.clear();
+      await clear();
 
-      expect(tomeList.cachedTomes.isEmpty, true);
+      await expectEmpty();
 
       final listDir = Directory(getTomeListPath());
       final tomeDirs = listDir.list();
@@ -180,15 +235,18 @@ void main() {
     test('Throws DuplicateTome exception', () async {
       final ids = <String>[];
 
-      final tomeList = TomeList(getTomeListPath());
+      await setDirectory();
 
-      ids.add(await tomeList.addFile('test/test_tomes/a_novel.fb2'));
+      ids.add(await addFile('test/test_tomes/a_novel.fb2'));
+
       await expectLater(
-        () async => tomeList.addFile('test/test_tomes/a_novel.fb2.zip'),
-        throwsA(isA<DuplicateTomeException>()),
+        addFile('test/test_tomes/a_novel.fb2'),
+        throwsA(
+          isA<DuplicateTomeException>(),
+        ),
       );
 
-      expect(tomeList.cachedTomes.length, 1);
+      await expectOneTome(ids[0], 'A Novel');
     });
 
     test('Open directory with two tome, one broken', () async {
@@ -235,11 +293,9 @@ void main() {
       final listDir = Directory(getTomeListPath());
       expect(await listDir.list().length, 2);
 
-      final tomeList = TomeList(getTomeListPath());
-      await tomeList.refresh();
+      await setDirectory();
 
-      expect(tomeList.cachedTomes.length, 1);
-      expect(tomeList.cachedTomes[ids[0]]!.tomeInfo.title, 'A Novel');
+      await expectOneTome(ids[0], 'A Novel');
 
       expect(await listDir.list().length, 1);
     });

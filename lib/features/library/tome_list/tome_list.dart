@@ -1,27 +1,40 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bsr/features/library/library.dart';
 import 'package:bsr/features/library/tome_list/cached_tome/cached_tome.dart';
+import 'package:bsr/features/library/tome_list/exceptions.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 export 'exceptions.dart';
+export 'tome_list.dart';
 
-class TomeList {
-  TomeList(this.directoryPath) {
-    _log.fine('TomeList($directoryPath)');
-  }
+part 'tome_list.g.dart';
 
+@Riverpod(keepAlive: true)
+class TomeList extends _$TomeList {
   final _log = Logger('TomeList');
 
-  final String directoryPath;
+  String? _directoryPath;
 
-  final Map<String, CachedTome> _cachedTomes = {};
+  @override
+  Future<Map<String, CachedTome>> build() async {
+    return {};
+  }
+
+  Future<void> setDirectory(String directoryPath) async {
+    _directoryPath = directoryPath;
+
+    await refresh();
+  }
 
   Future<void> refresh() async {
     _log.fine('refresh()');
 
-    final listDir = Directory(directoryPath);
+    _ensureDirectory();
+
+    final listDir = Directory(_directoryPath!);
     await listDir.create(recursive: true);
 
     final tomeDirs = listDir.list();
@@ -29,10 +42,12 @@ class TomeList {
     final newTomes = <String, CachedTome>{};
     final openFutureList = <Future<void>>[];
 
+    final prevState = await future;
+
     Future<void> openTome(String tomeDirectoryPath) async {
       final id = basename(tomeDirectoryPath);
       try {
-        final tome = _cachedTomes[id] ?? CachedTome(tomeDirectoryPath);
+        final tome = prevState[id] ?? CachedTome(tomeDirectoryPath);
         await tome.readInfo();
         newTomes[id] = tome;
       } catch (e, s) {
@@ -49,26 +64,28 @@ class TomeList {
 
     await Future.wait(openFutureList);
 
-    _cachedTomes
-      ..clear()
-      ..addAll(newTomes);
+    state = AsyncData(newTomes);
 
-    _log.fine('refresh() done, ${_cachedTomes.length} tomes found');
+    _log.fine('refresh() done, ${newTomes.length} tomes found');
   }
 
   Future<String> addFile(String filePath) async {
     _log.fine('addFile $filePath');
+
+    _ensureDirectory();
 
     await refresh();
 
     final tome = Tome.fromFile(filePath);
     final id = await tome.calcDigest();
 
-    if (_cachedTomes.keys.contains(id)) {
+    final prevState = await future;
+
+    if (prevState.keys.contains(id)) {
       throw DuplicateTomeException('Book already exists');
     }
 
-    final tomeDirectoryPath = join(directoryPath, id);
+    final tomeDirectoryPath = join(_directoryPath!, id);
     await Directory(tomeDirectoryPath).create(recursive: true);
     final tomeFilePath = join(
       tomeDirectoryPath,
@@ -87,9 +104,9 @@ class TomeList {
   Future<void> remove(String id) async {
     _log.fine('remove $id');
 
-    Directory(join(directoryPath, id)).deleteSync(recursive: true);
+    _ensureDirectory();
 
-    _cachedTomes.remove(id);
+    Directory(join(_directoryPath!, id)).deleteSync(recursive: true);
 
     await refresh();
 
@@ -99,14 +116,18 @@ class TomeList {
   Future<void> clear() async {
     _log.fine('clear');
 
-    Directory(directoryPath).deleteSync(recursive: true);
+    _ensureDirectory();
 
-    _cachedTomes.clear();
+    Directory(_directoryPath!).deleteSync(recursive: true);
 
     await refresh();
 
     _log.fine('clear done');
   }
 
-  Map<String, CachedTome> get cachedTomes => _cachedTomes;
+  void _ensureDirectory() {
+    if (_directoryPath == null) {
+      throw Exception('Directory not set');
+    }
+  }
 }

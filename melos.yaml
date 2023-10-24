@@ -66,7 +66,7 @@ scripts:
 
   test:flutter:
     description: Run Flutter tests for a specific package in this project.
-    exec: "flutter test test"
+    exec: "flutter test -j 1 test"
     concurrency: 1
     failFast: true
     packageFilters:
