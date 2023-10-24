@@ -13,13 +13,13 @@ dependencies:
   crypto: ^3.0.3
   epubx:
     git:
-      url: git@github.com:nesquikm/epubx.dart.git
+      url: https://github.com/nesquikm/epubx.dart.git
       ref: dev
   fancy_logger:
     path: packages/fancy_logger
   fb2_parse:
     git:
-      url: git@github.com:nesquikm/fb2_parse.git
+      url: https://github.com/nesquikm/fb2_parse.git
       ref: main
   flutter:
     sdk: flutter
