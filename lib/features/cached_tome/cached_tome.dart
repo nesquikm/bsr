@@ -13,25 +13,44 @@ class CachedTome {
   static const _tomeCoverImageFilename = 'tome.png';
 
   final String directoryPath;
-  late final Tome _tome;
+  Tome? _tome;
   late final TomeInfo _tomeInfo;
   late final String? _tomeCoverImageFilepath;
   bool _isOpen = false;
+  bool _isInfoCached = false;
 
-  Future<void> open() async {
-    if (_isOpen) {
+  Future<void> readInfo() async {
+    if (_isInfoCached) {
       return;
     }
 
-    final tomeFilePath = await _getTomeFilepath();
-    _tome = Tome.fromFile(tomeFilePath);
+    await _open();
 
     final (tomeInfo, fromCache) = await _getTomeInfo();
     _tomeInfo = tomeInfo;
 
     _tomeCoverImageFilepath = await _getTomeCoverImageFilepath(fromCache);
 
+    await _close();
+
+    _isInfoCached = true;
+  }
+
+  Future<void> _open() async {
+    if (_isOpen) {
+      return;
+    }
+
+    if (_tome == null) {
+      final tomeFilePath = await _getTomeFilepath();
+      _tome = Tome.fromFile(tomeFilePath);
+    }
+
     _isOpen = true;
+  }
+
+  Future<void> _close() async {
+    await _tome?.close();
   }
 
   Future<String> _getTomeFilepath() async {
@@ -61,8 +80,8 @@ class CachedTome {
       return (TomeInfo.fromJson(json), true);
     }
 
-    await _tome.open();
-    final tomeInfo = _tome.tomeInfo;
+    await _tome!.open();
+    final tomeInfo = _tome!.tomeInfo;
     final json = jsonEncode(tomeInfo.toJson());
     await file.writeAsString(
       json,
@@ -79,8 +98,8 @@ class CachedTome {
       return file.existsSync() ? file.path : null;
     }
 
-    await _tome.open();
-    final image = await _tome.coverImage;
+    await _tome!.open();
+    final image = await _tome!.coverImage;
     if (image == null) {
       return null;
     }
@@ -93,8 +112,4 @@ class CachedTome {
 
   TomeInfo get tomeInfo => _tomeInfo;
   String? get coverImagePath => _tomeCoverImageFilepath;
-
-  Future<void> close() async {
-    await _tome.close();
-  }
 }

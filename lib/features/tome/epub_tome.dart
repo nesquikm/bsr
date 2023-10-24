@@ -7,9 +7,6 @@ class EpubTome extends Tome {
   EpubTome(super.filePath);
 
   EpubBookRef? _epubBookRef;
-  late final TomeInfo _tomeInfo;
-  late final Image? _coverImage;
-  bool _coverImageCached = false;
   bool _isOpen = false;
 
   @override
@@ -22,7 +19,14 @@ class EpubTome extends Tome {
     final bytes = await file.readAsBytes();
     _epubBookRef = await EpubReader.openBook(bytes);
 
-    _tomeInfo = TomeInfo(
+    _isOpen = true;
+  }
+
+  @override
+  TomeInfo get tomeInfo {
+    assert(_isOpen, 'Should be opened before accessing tomeInfo');
+
+    return TomeInfo(
       author: _epubBookRef!.Author,
       title: _epubBookRef!.Title,
       authors: _epubBookRef!.AuthorList
@@ -34,24 +38,13 @@ class EpubTome extends Tome {
           )
           .toList(),
     );
-
-    _isOpen = true;
   }
 
   @override
-  TomeInfo get tomeInfo => _tomeInfo;
-
-  @override
   Future<Image?> get coverImage async {
-    if (_coverImageCached) {
-      return _coverImage;
-    }
+    assert(_isOpen, 'Should be opened before accessing coverImage');
 
-    await open();
-
-    _coverImage = await _epubBookRef!.readCover();
-    _coverImageCached = true;
-    return _coverImage;
+    return _epubBookRef!.readCover();
   }
 
   @override

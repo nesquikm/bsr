@@ -51,7 +51,7 @@ void main() {
       addTomeFile();
 
       final tome = CachedTome(getCachedTomePath());
-      await tome.open();
+      await tome.readInfo();
 
       final infoFile = File('${getCachedTomePath()}/tome.json');
       expect(infoFile.existsSync(), true);
@@ -64,7 +64,7 @@ void main() {
       addTomeFile();
 
       final tome = CachedTome(getCachedTomePath());
-      await tome.open();
+      await tome.readInfo();
 
       expect(tome.tomeInfo.author, 'Mike Nes');
       expect(tome.tomeInfo.title, 'A Novel');
@@ -75,7 +75,7 @@ void main() {
       addTomeFile();
 
       final tome = CachedTome(getCachedTomePath());
-      await tome.open();
+      await tome.readInfo();
 
       final coverFile = File('${getCachedTomePath()}/tome.png');
       final image = decodeImage(await coverFile.readAsBytes())!;
@@ -88,7 +88,7 @@ void main() {
       addTomeFile();
 
       final tome = CachedTome(getCachedTomePath());
-      await tome.open();
+      await tome.readInfo();
 
       final coverFile = File(tome.coverImagePath!);
       final image = decodeImage(await coverFile.readAsBytes())!;
@@ -103,13 +103,13 @@ void main() {
       addTomeFile();
 
       final tome0 = CachedTome(getCachedTomePath());
-      await tome0.open();
+      await tome0.readInfo();
 
       File(join(getCachedTomePath(), '${CachedTome.tomeFilename}.fb2'))
           .writeAsBytesSync([], flush: true);
 
       final tome1 = CachedTome(getCachedTomePath());
-      await tome1.open();
+      await tome1.readInfo();
 
       expect(tome1.tomeInfo.author, 'Mike Nes');
       expect(tome1.tomeInfo.title, 'A Novel');

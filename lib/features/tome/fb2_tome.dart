@@ -10,9 +10,6 @@ class FB2Tome extends Tome {
   FB2Tome(super.filePath);
 
   FB2Book? _fb2Book;
-  late final TomeInfo _tomeInfo;
-  late final Image? _coverImage;
-  bool _coverImageCached = false;
   bool _isOpen = false;
 
   @override
@@ -24,6 +21,13 @@ class FB2Tome extends Tome {
     _fb2Book = FB2Book(filePath);
     await _fb2Book!.parse();
 
+    _isOpen = true;
+  }
+
+  @override
+  TomeInfo get tomeInfo {
+    assert(_isOpen, 'Should be opened before accessing tomeInfo');
+
     final authors = _fb2Book!.description.authors
         ?.map(
           (author) => [author.firstName, author.middleName, author.lastName]
@@ -33,29 +37,17 @@ class FB2Tome extends Tome {
         .toSet()
         .toList();
 
-    _tomeInfo = TomeInfo(
+    return TomeInfo(
       author: authors?.first,
       title: _fb2Book!.description.bookTitle,
       authors: authors,
     );
-
-    _isOpen = true;
   }
 
   @override
-  TomeInfo get tomeInfo => _tomeInfo;
-
-  @override
   Future<Image?> get coverImage async {
-    if (_coverImageCached) {
-      return _coverImage;
-    }
-
-    await open();
-
-    _coverImage = base64ToImage(_fb2Book!.description.coverpageImageBytes);
-    _coverImageCached = true;
-    return _coverImage;
+    assert(_isOpen, 'Should be opened before accessing coverImage');
+    return base64ToImage(_fb2Book!.description.coverpageImageBytes);
   }
 
   Image? base64ToImage(String? base64Bytes) {
