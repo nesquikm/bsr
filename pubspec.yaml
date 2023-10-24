@@ -44,7 +44,7 @@ dev_dependencies:
   melos: ^3.1.1
   mocktail: ^1.0.0
   riverpod_generator: ^2.3.3
-  riverpod_lint: ^2.1.1
+  riverpod_lint: ^2.3.2
   very_good_analysis: ^5.1.0
 
 flutter:
