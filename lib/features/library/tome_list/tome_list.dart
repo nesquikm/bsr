@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bsr/features/cached_tome/cached_tome.dart';
-import 'package:bsr/features/tome/tome.dart';
-import 'package:bsr/features/tome_list/exceptions.dart';
+import 'package:bsr/features/library/library.dart';
+import 'package:bsr/features/library/tome_list/cached_tome/cached_tome.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 export 'exceptions.dart';

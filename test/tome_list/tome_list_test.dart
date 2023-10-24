@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:bsr/features/cached_tome/cached_tome.dart';
-import 'package:bsr/features/tome_list/tome_list.dart';
+import 'package:bsr/features/library/tome_list/cached_tome/cached_tome.dart';
+import 'package:bsr/features/library/tome_list/tome_list.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart';
 

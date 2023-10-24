@@ -1,6 +1,6 @@
-import 'package:bsr/features/tome/epub_tome.dart';
-import 'package:bsr/features/tome/fb2_tome.dart';
-import 'package:bsr/features/tome/tome.dart';
+import 'package:bsr/features/library/tome_list/cached_tome/tome/epub_tome.dart';
+import 'package:bsr/features/library/tome_list/cached_tome/tome/fb2_tome.dart';
+import 'package:bsr/features/library/tome_list/cached_tome/tome/tome.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

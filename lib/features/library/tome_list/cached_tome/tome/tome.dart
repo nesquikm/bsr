@@ -2,13 +2,14 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:async/async.dart';
-import 'package:bsr/features/tome/epub_tome.dart';
-import 'package:bsr/features/tome/fb2_tome.dart';
-import 'package:bsr/features/tome/tome.dart';
+import 'package:bsr/features/library/tome_list/cached_tome/tome/epub_tome.dart';
+import 'package:bsr/features/library/tome_list/cached_tome/tome/fb2_tome.dart';
+import 'package:bsr/features/library/tome_list/cached_tome/tome/tome_info.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:image/image.dart';
 
+export 'tome.dart';
 export 'tome_info.dart';
 
 abstract class Tome {

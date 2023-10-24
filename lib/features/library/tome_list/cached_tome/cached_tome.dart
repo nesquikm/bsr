@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bsr/features/tome/tome.dart';
+import 'package:bsr/features/library/tome_list/cached_tome/tome/tome.dart';
 import 'package:image/image.dart';
 import 'package:path/path.dart';
+
+export 'tome/tome.dart';
 
 class CachedTome {
   CachedTome(this.directoryPath);
