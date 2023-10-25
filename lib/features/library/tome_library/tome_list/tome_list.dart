@@ -24,6 +24,8 @@ class TomeList extends _$TomeList {
   }
 
   Future<void> setDirectory(String directoryPath) async {
+    _log.fine('setDirectory($directoryPath)');
+
     _directoryPath = directoryPath;
 
     await refresh();
