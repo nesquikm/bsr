@@ -1,4 +1,6 @@
-# melos_managed_dependency_overrides: fancy_logger
+# melos_managed_dependency_overrides: encrypted_storage,fancy_logger
 dependency_overrides:
+  encrypted_storage:
+    path: packages/encrypted_storage
   fancy_logger:
     path: packages/fancy_logger

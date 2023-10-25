@@ -6,7 +6,7 @@ part of 'tome_list.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$tomeListHash() => r'0bda9eec3622686a1e7180f29b6ca3c8d47a598f';
+String _$tomeListHash() => r'b9359766df6e3d49ad79b064a5e1b421bcee5d48';
 
 /// See also [TomeList].
 @ProviderFor(TomeList)

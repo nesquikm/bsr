@@ -6,7 +6,7 @@ part of 'tome_library.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$tomeLibraryHash() => r'db00bfc27e6602f8c032454ce693f0df1d127d82';
+String _$tomeLibraryHash() => r'5f49749fdb0aa4e3a132290da640727100099ed2';
 
 /// See also [TomeLibrary].
 @ProviderFor(TomeLibrary)
