@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bsr/features/library/tome_list/cached_tome/cached_tome.dart';
-import 'package:bsr/features/library/tome_list/exceptions.dart';
+import 'package:bsr/features/library/tome_library/tome_list/cached_tome/cached_tome.dart';
+import 'package:bsr/features/library/tome_library/tome_list/exceptions.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+export 'cached_tome/cached_tome.dart';
 export 'exceptions.dart';
-export 'tome_list.dart';
 
 part 'tome_list.g.dart';
 

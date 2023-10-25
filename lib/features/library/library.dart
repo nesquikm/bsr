@@ -1,2 +1,2 @@
 export 'page/page.dart';
-export 'tome_list/tome_list.dart';
+export 'tome_library/tome_library.dart';

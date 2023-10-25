@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:archive/archive_io.dart';
-import 'package:bsr/features/library/tome_list/cached_tome/tome/tome.dart';
+import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/tome.dart';
 import 'package:crypto/crypto.dart';
 import 'package:fb2_parse/fb2_parse.dart';
 import 'package:image/image.dart';

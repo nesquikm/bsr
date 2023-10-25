@@ -2,9 +2,9 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:async/async.dart';
-import 'package:bsr/features/library/tome_list/cached_tome/tome/epub_tome.dart';
-import 'package:bsr/features/library/tome_list/cached_tome/tome/fb2_tome.dart';
-import 'package:bsr/features/library/tome_list/cached_tome/tome/tome_info.dart';
+import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/epub_tome.dart';
+import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/fb2_tome.dart';
+import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/tome_info.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:image/image.dart';

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:bsr/features/library/tome_list/cached_tome/tome/tome.dart';
+import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/tome.dart';
 import 'package:epubx/epubx.dart';
 
 class EpubTome extends Tome {
