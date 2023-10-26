@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:bsr/app/router/router.dart';
+import 'package:bsr/features/loading/page/loading_page.dart';
 import 'package:bsr/features/logger/logger.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,11 +17,12 @@ class AppWrapper extends ConsumerStatefulWidget {
 
 class _AppWrapperState extends ConsumerState<AppWrapper> {
   late final AppLifecycleListener _listener;
+  bool _loaded = false;
 
   @override
   void initState() {
     super.initState();
-    startLogger();
+    startAsyncLoaders();
     _listener = AppLifecycleListener(
       onStateChange: _onStateChanged,
     );
@@ -44,8 +47,25 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
     }
   }
 
+  Future<void> startAsyncLoaders() async {
+    await Future.wait([
+      startLogger(),
+      startRouterPersistence(),
+    ]);
+
+    await startLogSession();
+
+    setState(() {
+      _loaded = true;
+    });
+  }
+
   Future<void> startLogger() async {
-    ref.read(globalLoggerProvider);
+    await ref.read(globalLoggerProvider.future);
+  }
+
+  Future<void> startRouterPersistence() async {
+    await ref.read(routerPersistenceProvider.future);
   }
 
   Future<void> startLogSession() async {
@@ -54,6 +74,6 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder();
+    return _loaded ? widget.builder() : const LoadingPage();
   }
 }
