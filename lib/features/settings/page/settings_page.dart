@@ -1,5 +1,6 @@
 import 'package:bsr/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -14,10 +15,17 @@ class _SettingsPageState extends State<SettingsPage> {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
-      body: const Column(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Settings'),
+          const Text('Settings'),
+          TextButton(
+            onPressed: () {
+              Logger('sasasa').config('ddff');
+              Logger.root.clearListeners();
+            },
+            child: const Text('Reader'),
+          ),
         ],
       ),
     );

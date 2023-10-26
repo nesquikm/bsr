@@ -45,9 +45,9 @@ class GlobalObserver extends ProviderObserver {
       return;
     }
 
-    _log.fine(
-      'didUpdateProvider $provider $previousValue -> $newValue',
-    );
+    // _log.fine(
+    //   'didUpdateProvider $provider $previousValue -> $newValue',
+    // );
   }
 
   @override

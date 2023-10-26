@@ -48,20 +48,12 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
   }
 
   Future<void> startAsyncLoaders() async {
-    await Future.wait([
-      startLogger(),
-      startRouterPersistence(),
-    ]);
-
+    await startRouterPersistence();
     await startLogSession();
 
     setState(() {
       _loaded = true;
     });
-  }
-
-  Future<void> startLogger() async {
-    await ref.read(globalLoggerProvider.future);
   }
 
   Future<void> startRouterPersistence() async {
