@@ -22,13 +22,13 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
           const Text('LibraryAuthors'),
           TextButton(
             onPressed: () {
-              ref.goFurther(AppRoute.reader.path);
+              ref.goFurther(AppRoute.reader);
             },
             child: const Text('Reader'),
           ),
           TextButton(
             onPressed: () {
-              ref.goFurther(AppRoute.settings.path);
+              ref.goFurther(AppRoute.settings);
             },
             child: const Text('Settings'),
           ),

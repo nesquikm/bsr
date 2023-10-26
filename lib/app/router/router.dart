@@ -51,26 +51,5 @@ GoRouter getRouter(RouterPersistence routerPersistence) {
     }
   });
 
-  // final saveLocation = router.routerDelegate.currentConfiguration.last.route is GoRoute &&
-
-  // final currentConfiguration = router.routerDelegate.currentConfiguration;
-  // final routes = currentConfiguration.matches
-  //     .where((match) => match.route is GoRoute)
-  //     .map((match) => match.route as GoRoute);
-
-  // final saveLocation = routes.every(
-  //   (route) => AppRoute.getByPath(route.path)?.saveLocation ?? false,
-  // );
-
-  // if (saveLocation) {
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     routerPersistence.setState(
-  //       RouterPersistenceState(
-  //         fullPath: currentConfiguration.fullPath,
-  //       ),
-  //     );
-  //   });
-  // }
-
   return router;
 }
