@@ -27,7 +27,7 @@ GoRouter getRouter(RouterPersistence routerPersistence) {
         ],
       ),
     ],
-    debugLogDiagnostics: true,
+    // debugLogDiagnostics: true,
   );
 
   router.routerDelegate.addListener(() {

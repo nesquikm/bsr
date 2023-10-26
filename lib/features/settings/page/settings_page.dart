@@ -15,17 +15,10 @@ class _SettingsPageState extends State<SettingsPage> {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
-      body: Column(
+      body: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Settings'),
-          TextButton(
-            onPressed: () {
-              Logger('sasasa').config('ddff');
-              Logger.root.clearListeners();
-            },
-            child: const Text('Reader'),
-          ),
+          Text('Settings'),
         ],
       ),
     );
