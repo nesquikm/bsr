@@ -1,6 +1,5 @@
 import 'package:bsr/l10n/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
