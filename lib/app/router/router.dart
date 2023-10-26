@@ -7,9 +7,9 @@ import 'package:go_router/go_router.dart';
 export 'router_persistence/router_persistence.dart';
 export 'routes/routes.dart';
 
-GoRouter getRouter(RouterPersistence routerPersistence) {
-  final rootNavigatorKey = GlobalKey<NavigatorState>();
+final rootNavigatorKey = GlobalKey<NavigatorState>();
 
+GoRouter getRouter(RouterPersistence routerPersistence) {
   // Create a new router
   final router = GoRouter(
     restorationScopeId: 'app',
