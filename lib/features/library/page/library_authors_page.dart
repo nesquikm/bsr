@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:bsr/features/common/common.dart';
 import 'package:bsr/features/library/library.dart';
+import 'package:bsr/features/library/page/add_file.dart';
 import 'package:bsr/features/library/view/author_tomes_sliver.dart';
 import 'package:bsr/features/library/view/fullscreen_empty_library.dart';
 import 'package:bsr/l10n/l10n.dart';
@@ -62,6 +63,12 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
           ),
           slivers,
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          addFile(ref);
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
