@@ -1,4 +1,9 @@
-import 'package:bsr/app/router/router.dart';
+import 'dart:collection';
+
+import 'package:bsr/features/common/common.dart';
+import 'package:bsr/features/library/library.dart';
+import 'package:bsr/features/library/view/author_tomes_sliver.dart';
+import 'package:bsr/features/library/view/fullscreen_empty_library.dart';
 import 'package:bsr/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,24 +19,54 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+
+    final result = ref.watch(
+      tomeLibraryGroupedByAuthorAndSortedByTitleProvider,
+    );
+
+    final slivers = switch (result) {
+      AsyncValue<SplayTreeMap<String, LinkedHashMap<String, CachedTome>>>(
+        :final valueOrNull?,
+      ) =>
+        valueOrNull.entries.isEmpty
+            ? const SliverFillRemaining(
+                child: FullscreenEmptyLibrary(),
+              )
+            : SliverList.builder(
+                itemBuilder: (context, index) {
+                  final author = valueOrNull.keys.elementAt(index);
+                  final tomes = valueOrNull.values.elementAt(index);
+
+                  return AuthorTomesSliver(author: author, tomes: tomes);
+                },
+                itemCount: valueOrNull.entries.length,
+              ),
+      AsyncValue(
+        :final error?,
+      ) =>
+        SliverFillRemaining(
+          child: FullscreenErrorMessage(
+            text: 'Error loading library $error',
+          ),
+        ),
+      _ => const SliverFillRemaining(
+          child: FullscreenProgressIndicator(),
+        ),
+    };
+
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text('LibraryAuthors'),
-          TextButton(
-            onPressed: () {
-              ref.goFurther(AppRoute.reader);
-            },
-            child: const Text('Reader'),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            title: Text(l10n.counterAppBarTitle),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {},
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () {
-              ref.goFurther(AppRoute.settings);
-            },
-            child: const Text('Settings'),
-          ),
+          slivers,
         ],
       ),
     );

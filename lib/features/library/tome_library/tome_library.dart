@@ -23,28 +23,28 @@ class TomeLibrary extends _$TomeLibrary {
       );
   }
 
-  Future<LinkedHashMap<String, CachedTome>> getSortedByTitle() async {
-    return _getSortedByTitle(await future);
-  }
+  // Future<LinkedHashMap<String, CachedTome>> getSortedByTitle() async {
+  //   return _getSortedByTitle(await future);
+  // }
 
-  Future<SplayTreeMap<String, LinkedHashMap<String, CachedTome>>>
-      getGroupedByAuthorAndSortedByTitle() async {
-    final tomeList = await future;
-    final result = SplayTreeMap<String, LinkedHashMap<String, CachedTome>>(
-      (a, b) => a.compareTo(b),
-    );
+  // Future<SplayTreeMap<String, LinkedHashMap<String, CachedTome>>>
+  //     getGroupedByAuthorAndSortedByTitle() async {
+  //   final tomeList = await future;
+  //   final result = SplayTreeMap<String, LinkedHashMap<String, CachedTome>>(
+  //     (a, b) => a.compareTo(b),
+  //   );
 
-    for (final tome in tomeList.entries) {
-      final author = tome.value.tomeInfo.author ?? '';
+  //   for (final tome in tomeList.entries) {
+  //     final author = tome.value.tomeInfo.author ?? '';
 
-      final authorTomeList = result[author] ?? <String, CachedTome>{}
-        ..addAll({tome.key: tome.value});
+  //     final authorTomeList = result[author] ?? <String, CachedTome>{}
+  //       ..addAll({tome.key: tome.value});
 
-      result[author] = _getSortedByTitle(authorTomeList);
-    }
+  //     result[author] = _getSortedByTitle(authorTomeList);
+  //   }
 
-    return result;
-  }
+  //   return result;
+  // }
 
   Future<void> setDirectory(String directoryPath) async {
     _log.fine('setDirectory($directoryPath)');
@@ -83,26 +83,53 @@ class TomeLibrary extends _$TomeLibrary {
     _markedAsRemoved.remove(id);
     ref.invalidateSelf();
   }
+}
 
-  LinkedHashMap<String, CachedTome> _getSortedByTitle(
-    Map<String, CachedTome> tomeList,
-  ) {
-    final sortedList = tomeList.entries.toList()
-      ..sort((a, b) {
-        final aTitle = a.value.tomeInfo.title;
-        final bTitle = b.value.tomeInfo.title;
-        return (aTitle == null || bTitle == null)
-            ? 0
-            : aTitle.compareTo(bTitle);
-      });
+@riverpod
+Future<LinkedHashMap<String, CachedTome>> tomeLibrarySortedByTitle(
+  TomeLibrarySortedByTitleRef ref,
+) async {
+  return _getSortedByTitle(await ref.watch(tomeLibraryProvider.future));
+}
 
-    return LinkedHashMap<String, CachedTome>.fromEntries(
-      sortedList.map(
-        (e) => MapEntry(
-          e.key,
-          e.value,
-        ),
-      ),
-    );
+@riverpod
+Future<SplayTreeMap<String, LinkedHashMap<String, CachedTome>>>
+    tomeLibraryGroupedByAuthorAndSortedByTitle(
+  TomeLibraryGroupedByAuthorAndSortedByTitleRef ref,
+) async {
+  final tomeList = await ref.watch(tomeLibraryProvider.future);
+  final result = SplayTreeMap<String, LinkedHashMap<String, CachedTome>>(
+    (a, b) => a.compareTo(b),
+  );
+
+  for (final tome in tomeList.entries) {
+    final author = tome.value.tomeInfo.author ?? '';
+
+    final authorTomeList = result[author] ?? <String, CachedTome>{}
+      ..addAll({tome.key: tome.value});
+
+    result[author] = _getSortedByTitle(authorTomeList);
   }
+
+  return result;
+}
+
+LinkedHashMap<String, CachedTome> _getSortedByTitle(
+  Map<String, CachedTome> tomeList,
+) {
+  final sortedList = tomeList.entries.toList()
+    ..sort((a, b) {
+      final aTitle = a.value.tomeInfo.title;
+      final bTitle = b.value.tomeInfo.title;
+      return (aTitle == null || bTitle == null) ? 0 : aTitle.compareTo(bTitle);
+    });
+
+  return LinkedHashMap<String, CachedTome>.fromEntries(
+    sortedList.map(
+      (e) => MapEntry(
+        e.key,
+        e.value,
+      ),
+    ),
+  );
 }

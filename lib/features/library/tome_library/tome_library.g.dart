@@ -6,7 +6,45 @@ part of 'tome_library.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$tomeLibraryHash() => r'5f49749fdb0aa4e3a132290da640727100099ed2';
+String _$tomeLibrarySortedByTitleHash() =>
+    r'c4ddc650cee412cfc1e5700d8fd80961fb75cb9c';
+
+/// See also [tomeLibrarySortedByTitle].
+@ProviderFor(tomeLibrarySortedByTitle)
+final tomeLibrarySortedByTitleProvider =
+    AutoDisposeFutureProvider<LinkedHashMap<String, CachedTome>>.internal(
+  tomeLibrarySortedByTitle,
+  name: r'tomeLibrarySortedByTitleProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$tomeLibrarySortedByTitleHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef TomeLibrarySortedByTitleRef
+    = AutoDisposeFutureProviderRef<LinkedHashMap<String, CachedTome>>;
+String _$tomeLibraryGroupedByAuthorAndSortedByTitleHash() =>
+    r'f715393b76a8bb8e577d7e61596a707a9d824ff1';
+
+/// See also [tomeLibraryGroupedByAuthorAndSortedByTitle].
+@ProviderFor(tomeLibraryGroupedByAuthorAndSortedByTitle)
+final tomeLibraryGroupedByAuthorAndSortedByTitleProvider =
+    AutoDisposeFutureProvider<
+        SplayTreeMap<String, LinkedHashMap<String, CachedTome>>>.internal(
+  tomeLibraryGroupedByAuthorAndSortedByTitle,
+  name: r'tomeLibraryGroupedByAuthorAndSortedByTitleProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$tomeLibraryGroupedByAuthorAndSortedByTitleHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef TomeLibraryGroupedByAuthorAndSortedByTitleRef
+    = AutoDisposeFutureProviderRef<
+        SplayTreeMap<String, LinkedHashMap<String, CachedTome>>>;
+String _$tomeLibraryHash() => r'7920fbd57515586eb38c2f302b24e0b08d460c09';
 
 /// See also [TomeLibrary].
 @ProviderFor(TomeLibrary)

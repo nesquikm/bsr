@@ -95,28 +95,12 @@ void main() {
       await expectTomeCount(6);
     });
 
-    test('Check sorting', () async {
+    test('Check sorting by title', () async {
       await setDirectory();
+      // TODO(nesquikm): why do we need to call this?
+      await expectTomeCount(6);
       await expectLater(
-        container!.read(tomeLibraryProvider.notifier).getSortedByTitle(),
-        completion(
-          (Map<String, CachedTome> res) {
-            final values = res.values.toList();
-            for (var i = 0; i < 5; i++) {
-              if (!values[i].tomeInfo.title!.startsWith('$i')) {
-                return false;
-              }
-            }
-            return true;
-          },
-        ),
-      );
-    });
-
-    test('Check SortedByTitle', () async {
-      await setDirectory();
-      await expectLater(
-        container!.read(tomeLibraryProvider.notifier).getSortedByTitle(),
+        container!.read(tomeLibrarySortedByTitleProvider.future),
         completion(
           (Map<String, CachedTome> res) {
             final values = res.values.toList();
@@ -133,10 +117,11 @@ void main() {
 
     test('Check GroupedByAuthorAndSortedByTitle', () async {
       await setDirectory();
+      // TODO(nesquikm): why do we need to call this?
+      await expectTomeCount(6);
       await expectLater(
         container!
-            .read(tomeLibraryProvider.notifier)
-            .getGroupedByAuthorAndSortedByTitle(),
+            .read(tomeLibraryGroupedByAuthorAndSortedByTitleProvider.future),
         completion(
           (Map<String, Map<String, CachedTome>> res) {
             final authors = res.keys.toList();
