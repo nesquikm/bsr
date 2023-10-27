@@ -23,29 +23,6 @@ class TomeLibrary extends _$TomeLibrary {
       );
   }
 
-  // Future<LinkedHashMap<String, CachedTome>> getSortedByTitle() async {
-  //   return _getSortedByTitle(await future);
-  // }
-
-  // Future<SplayTreeMap<String, LinkedHashMap<String, CachedTome>>>
-  //     getGroupedByAuthorAndSortedByTitle() async {
-  //   final tomeList = await future;
-  //   final result = SplayTreeMap<String, LinkedHashMap<String, CachedTome>>(
-  //     (a, b) => a.compareTo(b),
-  //   );
-
-  //   for (final tome in tomeList.entries) {
-  //     final author = tome.value.tomeInfo.author ?? '';
-
-  //     final authorTomeList = result[author] ?? <String, CachedTome>{}
-  //       ..addAll({tome.key: tome.value});
-
-  //     result[author] = _getSortedByTitle(authorTomeList);
-  //   }
-
-  //   return result;
-  // }
-
   Future<void> setDirectory(String directoryPath) async {
     _log.fine('setDirectory($directoryPath)');
     return ref.read(tomeListProvider.notifier).setDirectory(directoryPath);

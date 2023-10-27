@@ -10,3 +10,14 @@ class FullscreenEmptyLibrary extends StatelessWidget {
     );
   }
 }
+
+class FullscreenEmptyLibrarySliver extends StatelessWidget {
+  const FullscreenEmptyLibrarySliver({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SliverFillRemaining(
+      child: FullscreenEmptyLibrary(),
+    );
+  }
+}

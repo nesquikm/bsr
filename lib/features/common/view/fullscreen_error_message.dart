@@ -12,3 +12,16 @@ class FullscreenErrorMessage extends StatelessWidget {
     );
   }
 }
+
+class FullscreenErrorMessageSliver extends StatelessWidget {
+  const FullscreenErrorMessageSliver({required this.text, super.key});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverFillRemaining(
+      child: FullscreenErrorMessage(text: text),
+    );
+  }
+}

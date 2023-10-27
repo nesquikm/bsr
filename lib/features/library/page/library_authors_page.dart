@@ -29,9 +29,7 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
         :final valueOrNull?,
       ) =>
         valueOrNull.entries.isEmpty
-            ? const SliverFillRemaining(
-                child: FullscreenEmptyLibrary(),
-              )
+            ? const FullscreenEmptyLibrarySliver()
             : SliverList.builder(
                 itemBuilder: (context, index) {
                   final author = valueOrNull.keys.elementAt(index);
@@ -44,14 +42,10 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
       AsyncValue(
         :final error?,
       ) =>
-        SliverFillRemaining(
-          child: FullscreenErrorMessage(
-            text: 'Error loading library $error',
-          ),
+        FullscreenErrorMessageSliver(
+          text: 'Error loading library $error',
         ),
-      _ => const SliverFillRemaining(
-          child: FullscreenProgressIndicator(),
-        ),
+      _ => const FullscreenProgressIndicatorSliver(),
     };
 
     return Scaffold(

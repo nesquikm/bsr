@@ -10,3 +10,14 @@ class FullscreenProgressIndicator extends StatelessWidget {
     );
   }
 }
+
+class FullscreenProgressIndicatorSliver extends StatelessWidget {
+  const FullscreenProgressIndicatorSliver({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SliverFillRemaining(
+      child: FullscreenProgressIndicator(),
+    );
+  }
+}
