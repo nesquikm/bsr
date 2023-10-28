@@ -77,7 +77,10 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
       (await getApplicationDocumentsDirectory()).path,
       'library',
     );
-    await ref.read(tomeLibraryProvider.notifier).setDirectory(directoryPath);
+    // await ref.read(tomeLibraryProvider.notifier).setDirectory(directoryPath);
+    // TODO(nesquikm): Yeah, we can't use the above line because of the bug:
+    // https://github.com/rrousselGit/riverpod/issues/2041
+    await ref.watch(tomeLibraryProvider.notifier).setDirectory(directoryPath);
   }
 
   @override
