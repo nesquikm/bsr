@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bsr/features/library/library.dart';
+import 'package:bsr/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,27 +16,31 @@ class TomeListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final tomeInfo = tome.tomeInfo;
 
     return Card(
       child: ListTile(
-        dense: false,
-        leading: SizedBox.square(
-          dimension: 56,
+        leading: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 56),
           child: Image.file(
             File(tome.coverImagePath ?? ''),
             fit: BoxFit.contain,
           ),
         ),
-        title: Text(tomeInfo.title ?? ''),
-        subtitle: Text(tomeInfo.author ?? ''),
+        minLeadingWidth: 56,
+        title: Text(
+          tomeInfo.title ?? l10n.unknownTomeTitle,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
         trailing: PopupMenuButton<_TomeListTilePopupMenuItem>(
           icon: const Icon(Icons.more_vert),
           itemBuilder: (BuildContext context) =>
               <PopupMenuEntry<_TomeListTilePopupMenuItem>>[
-            const PopupMenuItem<_TomeListTilePopupMenuItem>(
+            PopupMenuItem<_TomeListTilePopupMenuItem>(
               value: _TomeListTilePopupMenuItem.remove,
-              child: Text('Remove'),
+              child: Text(l10n.tomeRemoveButtonTitle),
             ),
           ],
           onSelected: (value) {

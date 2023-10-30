@@ -15,22 +15,21 @@ class _LibraryTomesPageState extends ConsumerState<LibraryTomesPage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
+      appBar: AppBar(title: Text(l10n.libraryTomesAppBarTitle)),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('LibraryTomes'),
           TextButton(
             onPressed: () {
               ref.goFurther(AppRoute.reader);
             },
-            child: const Text('Reader'),
+            child: Text(l10n.readerAppBarTitle),
           ),
           TextButton(
             onPressed: () {
               ref.goFurther(AppRoute.settings);
             },
-            child: const Text('Settings'),
+            child: Text(l10n.settingsAppBarTitle),
           ),
         ],
       ),

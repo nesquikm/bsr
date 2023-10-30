@@ -1,3 +1,4 @@
+import 'package:bsr/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,18 +15,18 @@ class LibraryPage extends StatelessWidget {
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Tomes', //context.l10n.libraryTomes,
+            icon: const Icon(Icons.book),
+            label: context.l10n.libraryTomesAppBarTitle,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Autors', //context.l10n.libraryAuthors,
+            icon: const Icon(Icons.people),
+            label: context.l10n.libraryAuthorsAppBarTitle,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.collections),
-            label: 'Collections', //,context.l10n.libraryCollections,
+            icon: const Icon(Icons.collections),
+            label: context.l10n.libraryCollectionsAppBarTitle,
           ),
         ],
         currentIndex: navigationShell.currentIndex,

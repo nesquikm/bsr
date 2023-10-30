@@ -1,5 +1,6 @@
 import 'package:bsr/app/app.dart';
 import 'package:bsr/features/library/library.dart';
+import 'package:bsr/l10n/l10n.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,12 +52,13 @@ Future<void> addFile({
     added++;
   }
 
-  final context = GlobalKeys.rootNavigatorKey.currentContext!;
+  final globalContext = GlobalKeys.rootNavigatorKey.currentContext!;
 
-  if (context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(
+  if (globalContext.mounted) {
+    final l10n = globalContext.l10n;
+    ScaffoldMessenger.of(globalContext).showSnackBar(
       SnackBar(
-        content: Text('Added $added files, failed to add $failed files'),
+        content: Text(l10n.addedFilesMessage(added, failed)),
       ),
     );
   }

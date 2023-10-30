@@ -84,7 +84,7 @@ class TomeList extends _$TomeList {
     final prevState = await future;
 
     if (prevState.keys.contains(id)) {
-      throw DuplicateTomeException('Book already exists');
+      throw DuplicateTomeException('Tome already exists');
     }
 
     final tomeDirectoryPath = join(_directoryPath!, id);

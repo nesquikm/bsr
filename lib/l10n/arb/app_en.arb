@@ -1,7 +1,74 @@
 {
-    "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
+  "@@locale": "en",
+  "libraryTomesAppBarTitle": "Tomes",
+  "@libraryTomesAppBarTitle": {
+    "description": "Text shown in the AppBar and BottomNavigationBar of the Library Page"
+  },
+  "libraryAuthorsAppBarTitle": "Authors",
+  "@libraryAuthorsAppBarTitle": {
+    "description": "Text shown in the AppBar and BottomNavigationBar of the Library Page"
+  },
+  "libraryCollectionsAppBarTitle": "Collections",
+  "@libraryCollectionsAppBarTitle": {
+    "description": "Text shown in the AppBar and BottomNavigationBar of the Library Page"
+  },
+  "readerAppBarTitle": "Reader",
+  "@readerAppBarTitle": {
+    "description": "Text shown in the AppBar of the Reader Page"
+  },
+  "settingsAppBarTitle": "Settings",
+  "@settingsAppBarTitle": {
+    "description": "Text shown in the AppBar of the Settings Page"
+  },
+  "errorLoadingLibraryMessage": "Error loading library {error}",
+  "@errorLoadingLibraryMessage": {
+    "description": "Text shown in when the library fails to load",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
     }
+  },
+  "libraryEmptyMessage": "Library is empty",
+  "@libraryEmptyMessage": {
+    "description": "Text shown in the Library Page when the library is empty"
+  },
+  "addedFilesMessage": "Added {added} files, failed to add {failed} files",
+  "@addedFilesMessage": {
+    "description": "Text shown in the Library Page when files are added",
+    "placeholders": {
+      "added": {
+        "type": "int",
+        "format": "compact"
+      },
+      "failed": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
+  "tomeRemoveButtonTitle": "Remove",
+  "@tomeRemoveButtonTitle": {
+    "description": "Text shown on the remove button in the Library Page"
+  },
+  "tomeRemovedMessage": "Tome was removed",
+  "@tomeRemovedMessage": {
+    "description": "Text shown as a snackbar message in the Library Page"
+  },
+  "undoButtonTitle": "Undo",
+  "@undoButtonTitle": {
+    "description": "Text shown on the undo button"
+  },
+  "failedRemoveTomeMessage": "Failed to remove tome",
+  "@failedRemoveTomeMessage": {
+    "description": "Text shown as a snackbar message in the Library Page"
+  },
+  "unknownTomeTitle": "Unknown title",
+  "@unknownTomeTitle": {
+    "description": "Text shown as the title of a tome when the title is unknown"
+  },
+  "unknownTomeAuthor": "Unknown author",
+  "@unknownTomeAuthor": {
+    "description": "Text shown as the author of a tome when the author is unknown"
+  }
 }

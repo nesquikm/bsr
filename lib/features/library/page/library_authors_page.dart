@@ -33,7 +33,7 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
         :final error?,
       ) =>
         FullscreenErrorMessageSliver(
-          text: 'Error loading library $error',
+          text: l10n.errorLoadingLibraryMessage(error.toString()),
         ),
       _ => const FullscreenProgressIndicatorSliver(),
     };
@@ -42,7 +42,7 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            title: Text(l10n.counterAppBarTitle),
+            title: Text(l10n.libraryAuthorsAppBarTitle),
             actions: [
               IconButton(
                 icon: const Icon(Icons.search),

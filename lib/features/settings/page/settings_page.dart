@@ -13,11 +13,11 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
-      body: const Column(
+      appBar: AppBar(title: Text(l10n.settingsAppBarTitle)),
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Settings'),
+          Text(l10n.settingsAppBarTitle),
         ],
       ),
     );

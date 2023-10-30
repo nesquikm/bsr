@@ -13,11 +13,11 @@ class _ReaderPageState extends State<ReaderPage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
-      body: const Column(
+      appBar: AppBar(title: Text(l10n.readerAppBarTitle)),
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Reader'),
+          Text(l10n.readerAppBarTitle),
         ],
       ),
     );

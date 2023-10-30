@@ -8,7 +8,12 @@ class AuthorListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(author),
+      title: Text(
+        author,
+        style: Theme.of(context).textTheme.headlineMedium,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 }

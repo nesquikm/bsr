@@ -1,5 +1,6 @@
 import 'package:bsr/app/app.dart';
 import 'package:bsr/features/library/library.dart';
+import 'package:bsr/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
@@ -11,24 +12,26 @@ Future<void> markTomeAsRemoved({
   final log = Logger('removeTome');
 
   final provider = ref.read(tomeLibraryProvider.notifier);
-  final context = GlobalKeys.rootNavigatorKey.currentContext!;
+  final globalContext = GlobalKeys.rootNavigatorKey.currentContext!;
 
   try {
     await provider.markAsRemoved(id);
 
-    if (!context.mounted) {
+    if (!globalContext.mounted) {
       log.severe('Context is not mounted');
       return;
     }
 
+    final l10n = globalContext.l10n;
+
     await ScaffoldMessenger.of(
-      context,
+      globalContext,
     )
         .showSnackBar(
           SnackBar(
-            content: const Text('Book was removed'),
+            content: Text(l10n.tomeRemovedMessage),
             action: SnackBarAction(
-              label: 'Undo',
+              label: l10n.undoButtonTitle,
               onPressed: () {
                 provider.unmarkAsRemoved(id);
               },
@@ -50,13 +53,15 @@ Future<void> markTomeAsRemoved({
     });
   } catch (e, s) {
     log.severe('Failed to remove tome $id', e, s);
-    if (!context.mounted) {
+    if (!globalContext.mounted) {
       log.severe('Context is not mounted');
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Failed to remove book'),
+    final l10n = globalContext.l10n;
+
+    ScaffoldMessenger.of(globalContext).showSnackBar(
+      SnackBar(
+        content: Text(l10n.failedRemoveTomeMessage),
       ),
     );
     return;
@@ -70,31 +75,22 @@ Future<void> _removeTome({
   final log = Logger('removeTome');
 
   final provider = ref.read(tomeLibraryProvider.notifier);
-  final context = GlobalKeys.rootNavigatorKey.currentContext!;
+  final globalContext = GlobalKeys.rootNavigatorKey.currentContext!;
 
   try {
     await provider.remove(id);
   } catch (e, s) {
     log.severe('Failed to remove tome $id', e, s);
-    if (!context.mounted) {
+    if (!globalContext.mounted) {
       log.severe('Context is not mounted');
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Failed to remove book'),
+    final l10n = globalContext.l10n;
+    ScaffoldMessenger.of(globalContext).showSnackBar(
+      SnackBar(
+        content: Text(l10n.failedRemoveTomeMessage),
       ),
     );
     return;
   }
-
-  if (!context.mounted) {
-    log.severe('Context is not mounted');
-    return;
-  }
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(
-      content: Text('Book was removed'),
-    ),
-  );
 }

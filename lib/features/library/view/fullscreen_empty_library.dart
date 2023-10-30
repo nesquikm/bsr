@@ -1,3 +1,4 @@
+import 'package:bsr/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
 class FullscreenEmptyLibrary extends StatelessWidget {
@@ -5,8 +6,9 @@ class FullscreenEmptyLibrary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Library is empty'),
+    final l10n = context.l10n;
+    return Center(
+      child: Text(l10n.libraryEmptyMessage),
     );
   }
 }
