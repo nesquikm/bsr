@@ -31,15 +31,7 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
       ) =>
         valueOrNull.entries.isEmpty
             ? const FullscreenEmptyLibrarySliver()
-            : SliverList.builder(
-                itemBuilder: (context, index) {
-                  final author = valueOrNull.keys.elementAt(index);
-                  final tomes = valueOrNull.values.elementAt(index);
-
-                  return AuthorTomesSliver(author: author, tomes: tomes);
-                },
-                itemCount: valueOrNull.entries.length,
-              ),
+            : authorTomesSliver(authorTomes: valueOrNull.entries),
       AsyncValue(
         :final error?,
       ) =>
