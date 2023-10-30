@@ -189,6 +189,54 @@ void main() {
       await expectOneTome(ids[1], 'Another novel');
     });
 
+    test('Open empy directory, add one file (epub)', () async {
+      final ids = <String>[];
+
+      await setDirectory();
+
+      await expectEmpty();
+
+      ids.add(await addFile('test/test_tomes/a_novel.epub'));
+
+      await expectOneTome(ids[0], 'A Novel');
+    });
+
+    test('Open empy directory, add one file (fb2)', () async {
+      final ids = <String>[];
+
+      await setDirectory();
+
+      await expectEmpty();
+
+      ids.add(await addFile('test/test_tomes/a_novel.fb2'));
+
+      await expectOneTome(ids[0], 'A Novel');
+    });
+
+    test('Open empy directory, add one file (fbz)', () async {
+      final ids = <String>[];
+
+      await setDirectory();
+
+      await expectEmpty();
+
+      ids.add(await addFile('test/test_tomes/a_novel.fbz'));
+
+      await expectOneTome(ids[0], 'A Novel');
+    });
+
+    test('Open empy directory, add one file (fb2.zip)', () async {
+      final ids = <String>[];
+
+      await setDirectory();
+
+      await expectEmpty();
+
+      ids.add(await addFile('test/test_tomes/a_novel.fb2.zip'));
+
+      await expectOneTome(ids[0], 'A Novel');
+    });
+
     test('Open empy directory, add two files, remove one', () async {
       final ids = <String>[];
 

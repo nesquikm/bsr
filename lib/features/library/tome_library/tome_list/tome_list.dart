@@ -91,7 +91,7 @@ class TomeList extends _$TomeList {
     await Directory(tomeDirectoryPath).create(recursive: true);
     final tomeFilePath = join(
       tomeDirectoryPath,
-      '${CachedTome.tomeFilename}${extension(filePath)}',
+      '${CachedTome.tomeFilename}${extension(filePath, 2)}',
     );
 
     final file = File(filePath);

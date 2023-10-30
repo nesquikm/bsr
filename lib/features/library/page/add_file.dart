@@ -7,8 +7,10 @@ Future<void> addFile(WidgetRef ref) async {
   final log = Logger('addFile');
 
   final result = await FilePicker.platform.pickFiles(
-    type: FileType.custom,
-    allowedExtensions: Tome.supportedExtensions(),
+    // TODO(nesquikm): Why it doesn't work?
+    // type: FileType.custom,
+    // allowedExtensions: Tome.supportedExtensions(),
+    allowMultiple: true,
   );
 
   if (result == null) {
@@ -28,7 +30,13 @@ Future<void> addFile(WidgetRef ref) async {
       continue;
     }
 
-    final id = await provider.addFile(path);
+    final String id;
+    try {
+      id = await provider.addFile(path);
+    } catch (e, s) {
+      log.severe('Failed to add file $path', e, s);
+      continue;
+    }
     log.info('Added file $path with id $id');
   }
 }

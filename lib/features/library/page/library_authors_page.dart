@@ -31,7 +31,7 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
       ) =>
         valueOrNull.entries.isEmpty
             ? const FullscreenEmptyLibrarySliver()
-            : authorTomesSliver(authorTomes: valueOrNull.entries),
+            : AuthorTomesSliver(authorTomes: valueOrNull.entries),
       AsyncValue(
         :final error?,
       ) =>
