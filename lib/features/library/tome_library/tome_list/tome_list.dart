@@ -47,7 +47,7 @@ class TomeList extends _$TomeList {
     final prevState = await future;
 
     Future<void> openTome(String tomeDirectoryPath) async {
-      final id = basename(tomeDirectoryPath);
+      final id = CachedTome.getIdFromPath(tomeDirectoryPath);
       try {
         final tome = prevState[id] ?? CachedTome(tomeDirectoryPath);
         await tome.readInfo();

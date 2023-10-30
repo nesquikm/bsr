@@ -8,7 +8,7 @@ import 'package:path/path.dart';
 export 'tome/tome.dart';
 
 class CachedTome {
-  CachedTome(this.directoryPath);
+  CachedTome(this.directoryPath) : id = getIdFromPath(directoryPath);
 
   static const tomeFilename = 'tome';
   static const _tomeInfoFilename = 'tome.json';
@@ -20,6 +20,7 @@ class CachedTome {
   late final String? _tomeCoverImageFilepath;
   bool _isOpen = false;
   bool _isInfoCached = false;
+  final String id;
 
   Future<void> readInfo() async {
     if (_isInfoCached) {
@@ -110,6 +111,10 @@ class CachedTome {
     await file.writeAsBytes(png);
 
     return file.path;
+  }
+
+  static String getIdFromPath(String tomeDirectoryPath) {
+    return basename(tomeDirectoryPath);
   }
 
   TomeInfo get tomeInfo => _tomeInfo;

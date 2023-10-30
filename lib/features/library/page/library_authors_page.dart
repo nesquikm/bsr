@@ -2,9 +2,6 @@ import 'dart:collection';
 
 import 'package:bsr/features/common/common.dart';
 import 'package:bsr/features/library/library.dart';
-import 'package:bsr/features/library/page/add_file.dart';
-import 'package:bsr/features/library/view/author_tomes_sliver.dart';
-import 'package:bsr/features/library/view/fullscreen_empty_library.dart';
 import 'package:bsr/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,7 +28,7 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
       ) =>
         valueOrNull.entries.isEmpty
             ? const FullscreenEmptyLibrarySliver()
-            : AuthorTomesSliver(authorTomes: valueOrNull.entries),
+            : AuthorTomesSliver(authorTomes: valueOrNull.entries, ref: ref),
       AsyncValue(
         :final error?,
       ) =>
@@ -58,7 +55,9 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          addFile(ref);
+          addFile(
+            ref: ref,
+          );
         },
         child: const Icon(Icons.add),
       ),

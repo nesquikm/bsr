@@ -1,3 +1,4 @@
+import 'package:bsr/app/global_keys.dart';
 import 'package:bsr/app/router/router_persistence/router_persistence.dart';
 import 'package:bsr/app/router/routes/routes.dart';
 import 'package:bsr/features/library/page/page.dart';
@@ -7,13 +8,13 @@ import 'package:go_router/go_router.dart';
 export 'router_persistence/router_persistence.dart';
 export 'routes/routes.dart';
 
-final rootNavigatorKey = GlobalKey<NavigatorState>();
+// final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 GoRouter getRouter(RouterPersistence routerPersistence) {
   // Create a new router
   final router = GoRouter(
     restorationScopeId: 'app',
-    navigatorKey: rootNavigatorKey,
+    navigatorKey: GlobalKeys.rootNavigatorKey,
     initialLocation: routerPersistence.getCachedState().fullPath,
     routes: [
       StatefulShellRoute.indexedStack(
