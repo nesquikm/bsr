@@ -27,7 +27,7 @@ class AuthorTomesSliver extends StatelessWidget {
     return SliverList.builder(
       itemBuilder: (context, index) => switch (_entries[index]) {
         final String author => AuthorListTile(author: author),
-        final CachedTome tome => TomeListTile(tome: tome, ref: ref),
+        final CachedTome tome => TomeListTileCard(tome: tome, ref: ref),
         _ => throw Exception('Unexpected type'),
       },
       itemCount: _entries.length,

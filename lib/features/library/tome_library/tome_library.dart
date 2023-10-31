@@ -30,7 +30,7 @@ class TomeLibrary extends _$TomeLibrary {
 
   Future<void> refresh() async {
     _log.fine('refresh()');
-    return ref.read(tomeListProvider.notifier).refresh();
+    await ref.read(tomeListProvider.notifier).refresh();
   }
 
   Future<String> addFile(String filePath) async {

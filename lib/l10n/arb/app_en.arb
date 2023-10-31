@@ -70,5 +70,14 @@
   "unknownTomeAuthor": "Unknown author",
   "@unknownTomeAuthor": {
     "description": "Text shown as the author of a tome when the author is unknown"
+  },
+  "duplicatedTomeMessage": "Tome already exists ({title})",
+  "@duplicatedTomeMessage": {
+    "description": "Text shown as a snackbar message in the Library Page",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
   }
 }

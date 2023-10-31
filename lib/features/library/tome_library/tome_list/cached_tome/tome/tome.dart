@@ -36,6 +36,17 @@ abstract class Tome {
     return _epubExtensions + _fb2Extensions;
   }
 
+  String getExtenstion() {
+    final filePathLower = filePath.toLowerCase();
+
+    return supportedExtensions().firstWhere(
+      filePathLower.endsWith,
+      orElse: () {
+        throw FormatException('Unsupported tome format', filePath);
+      },
+    );
+  }
+
   static final _epubExtensions = ['.epub'];
   static final _fb2Extensions = ['.fb2', '.fb2.zip', '.fbz'];
 

@@ -31,7 +31,8 @@ class TomeList extends _$TomeList {
     await refresh();
   }
 
-  Future<void> refresh() async {
+  /// Refreshes the list of tomes. Returns failed tomes ids.
+  Future<List<String>> refresh() async {
     _log.fine('refresh()');
 
     _ensureDirectory();
@@ -46,6 +47,8 @@ class TomeList extends _$TomeList {
 
     final prevState = await future;
 
+    final failed = <String>[];
+
     Future<void> openTome(String tomeDirectoryPath) async {
       final id = CachedTome.getIdFromPath(tomeDirectoryPath);
       try {
@@ -54,6 +57,7 @@ class TomeList extends _$TomeList {
         newTomes[id] = tome;
       } catch (e, s) {
         _log.severe('Failed to open tome $id, removing', e, s);
+        failed.add(id);
         await remove(id);
       }
     }
@@ -69,6 +73,7 @@ class TomeList extends _$TomeList {
     state = AsyncData(newTomes);
 
     _log.fine('refresh() done, ${newTomes.length} tomes found');
+    return failed;
   }
 
   Future<String> addFile(String filePath) async {
@@ -91,12 +96,17 @@ class TomeList extends _$TomeList {
     await Directory(tomeDirectoryPath).create(recursive: true);
     final tomeFilePath = join(
       tomeDirectoryPath,
-      '${CachedTome.tomeFilename}${extension(filePath, 2)}',
+      '${CachedTome.tomeFilename}${tome.getExtenstion()}',
     );
 
     final file = File(filePath);
     await file.copy(tomeFilePath);
-    await refresh();
+    final failed = await refresh();
+
+    if (failed.isNotEmpty) {
+      _log.severe('Failed to refresh after adding tome');
+      throw Exception('Failed to refresh after adding tome');
+    }
 
     _log.fine('addFile done, id: $id, original file path: $filePath');
 

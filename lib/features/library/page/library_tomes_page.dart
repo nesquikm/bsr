@@ -6,30 +6,30 @@ import 'package:bsr/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LibraryAuthorsPage extends ConsumerStatefulWidget {
-  const LibraryAuthorsPage({super.key});
+class LibraryTomesPage extends ConsumerStatefulWidget {
+  const LibraryTomesPage({super.key});
 
   @override
-  ConsumerState<LibraryAuthorsPage> createState() => _LibraryAuthorsPageState();
+  ConsumerState<LibraryTomesPage> createState() => _LibraryTomesPageState();
 }
 
-class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
+class _LibraryTomesPageState extends ConsumerState<LibraryTomesPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
     final result = ref.watch(
-      tomeLibraryGroupedByAuthorAndSortedByTitleProvider,
+      tomeLibrarySortedByTitleProvider,
     );
 
     final data = switch (result) {
-      AsyncValue<SplayTreeMap<String, LinkedHashMap<String, CachedTome>>>(
+      AsyncValue<LinkedHashMap<String, CachedTome>>(
         :final valueOrNull?,
       ) =>
         valueOrNull.entries.isEmpty
             ? const FullscreenEmptyLibrarySliver()
-            : AuthorTomesSliver(
-                authorTomes: valueOrNull.entries,
+            : TomesSliver(
+                tomes: valueOrNull.values,
                 ref: ref,
               ),
       AsyncValue(
@@ -45,7 +45,7 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            title: Text(l10n.libraryAuthorsAppBarTitle),
+            title: Text(l10n.libraryTomesAppBarTitle),
             actions: [
               IconButton(
                 icon: const Icon(Icons.search),

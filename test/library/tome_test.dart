@@ -9,24 +9,28 @@ void main() {
       final tome = Tome.fromFile('test/test_tomes/a_novel.epub');
       expect(tome, isNotNull);
       expect(tome, isInstanceOf<EpubTome>());
+      expect(tome.getExtenstion(), '.epub');
     });
 
     test('Instantiate from fb2', () {
       final tome = Tome.fromFile('test/test_tomes/a_novel.fb2');
       expect(tome, isNotNull);
       expect(tome, isInstanceOf<FB2Tome>());
+      expect(tome.getExtenstion(), '.fb2');
     });
 
     test('Instantiate from fbz', () {
       final tome = Tome.fromFile('test/test_tomes/a_novel.fbz');
       expect(tome, isNotNull);
       expect(tome, isInstanceOf<FB2Tome>());
+      expect(tome.getExtenstion(), '.fbz');
     });
 
     test('Instantiate from fb2.zip', () {
       final tome = Tome.fromFile('test/test_tomes/a_novel.fb2.zip');
       expect(tome, isNotNull);
       expect(tome, isInstanceOf<FB2Tome>());
+      expect(tome.getExtenstion(), '.fb2.zip');
     });
 
     test('Throws FormatException for unsupported file', () {
