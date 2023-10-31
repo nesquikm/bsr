@@ -37,7 +37,6 @@ class TomeCard extends StatelessWidget {
                     tome: tome,
                     ref: ref,
                     withCover: false,
-                    withAuthor: true,
                   ),
                 ),
               ),

@@ -6,7 +6,7 @@ import '../helpers/helpers.dart';
 
 void main() {
   ProviderContainer? container;
-  group('TomeLibrary', () {
+  group('tomeLibrarySortedByTitle', () {
     setUp(() async {
       container = createContainer();
       createTomeLibraryDirectory();
@@ -17,15 +17,6 @@ void main() {
       container = null;
       deleteTomeLibraryDirectory();
     });
-
-    Future<void> expectEmpty() async {
-      await expectLater(
-        container!.read(tomeLibraryProvider.future),
-        completion(
-          {},
-        ),
-      );
-    }
 
     Future<void> expectTomeCount(int count) async {
       await expectLater(
@@ -42,34 +33,24 @@ void main() {
           );
     }
 
-    Future<void> markAsRemoved(String id) async {
-      await container!.read(tomeLibraryProvider.notifier).markAsRemoved(
-            id,
-          );
-    }
-
-    Future<void> unmarkAsRemoved(String id) async {
-      await container!.read(tomeLibraryProvider.notifier).unmarkAsRemoved(
-            id,
-          );
-    }
-
-    test('Instantiate TomeLibrary', () async {
-      await expectEmpty();
-    });
-
-    test('Instantiate TomeLibrary with library', () async {
+    test('Check sorting by title', () async {
       await setDirectory();
+      // TODO(nesquikm): why do we need to call this?
       await expectTomeCount(6);
-    });
-
-    test('Mark and unmark tome as removed', () async {
-      await setDirectory();
-      await expectTomeCount(6);
-      await markAsRemoved('id3');
-      await expectTomeCount(5);
-      await unmarkAsRemoved('id3');
-      await expectTomeCount(6);
+      await expectLater(
+        container!.read(tomeLibrarySortedByTitleProvider.future),
+        completion(
+          (Map<String, CachedTome> res) {
+            final values = res.values.toList();
+            for (var i = 0; i < 5; i++) {
+              if (!values[i].tomeInfo.title!.startsWith('$i')) {
+                return false;
+              }
+            }
+            return true;
+          },
+        ),
+      );
     });
   });
 }
