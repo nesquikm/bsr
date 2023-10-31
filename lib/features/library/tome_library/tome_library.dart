@@ -5,6 +5,8 @@ import 'package:bsr/features/library/library.dart';
 import 'package:logging/logging.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+export 'grouped_by_author_sorted_by_title.dart';
+export 'sorted_by_title.dart';
 export 'tome_list/tome_list.dart';
 
 part 'tome_library.g.dart';
@@ -60,53 +62,26 @@ class TomeLibrary extends _$TomeLibrary {
     _markedAsRemoved.remove(id);
     ref.invalidateSelf();
   }
-}
 
-@riverpod
-Future<LinkedHashMap<String, CachedTome>> tomeLibrarySortedByTitle(
-  TomeLibrarySortedByTitleRef ref,
-) async {
-  return _getSortedByTitle(await ref.watch(tomeLibraryProvider.future));
-}
+  static LinkedHashMap<String, CachedTome> getSortedByTitle(
+    Map<String, CachedTome> tomeList,
+  ) {
+    final sortedList = tomeList.entries.toList()
+      ..sort((a, b) {
+        final aTitle = a.value.tomeInfo.title;
+        final bTitle = b.value.tomeInfo.title;
+        return (aTitle == null || bTitle == null)
+            ? 0
+            : aTitle.compareTo(bTitle);
+      });
 
-@riverpod
-Future<SplayTreeMap<String, LinkedHashMap<String, CachedTome>>>
-    tomeLibraryGroupedByAuthorAndSortedByTitle(
-  TomeLibraryGroupedByAuthorAndSortedByTitleRef ref,
-) async {
-  final tomeList = await ref.watch(tomeLibraryProvider.future);
-  final result = SplayTreeMap<String, LinkedHashMap<String, CachedTome>>(
-    (a, b) => a.compareTo(b),
-  );
-
-  for (final tome in tomeList.entries) {
-    final author = tome.value.tomeInfo.author ?? '';
-
-    final authorTomeList = result[author] ?? <String, CachedTome>{}
-      ..addAll({tome.key: tome.value});
-
-    result[author] = _getSortedByTitle(authorTomeList);
-  }
-
-  return result;
-}
-
-LinkedHashMap<String, CachedTome> _getSortedByTitle(
-  Map<String, CachedTome> tomeList,
-) {
-  final sortedList = tomeList.entries.toList()
-    ..sort((a, b) {
-      final aTitle = a.value.tomeInfo.title;
-      final bTitle = b.value.tomeInfo.title;
-      return (aTitle == null || bTitle == null) ? 0 : aTitle.compareTo(bTitle);
-    });
-
-  return LinkedHashMap<String, CachedTome>.fromEntries(
-    sortedList.map(
-      (e) => MapEntry(
-        e.key,
-        e.value,
+    return LinkedHashMap<String, CachedTome>.fromEntries(
+      sortedList.map(
+        (e) => MapEntry(
+          e.key,
+          e.value,
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
