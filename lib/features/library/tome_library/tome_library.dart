@@ -7,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 export 'grouped_by_author_sorted_by_title.dart';
 export 'sorted_by_title.dart';
+export 'tome_library_search.dart';
 export 'tome_library_search_index.dart';
 export 'tome_list/tome_list.dart';
 
