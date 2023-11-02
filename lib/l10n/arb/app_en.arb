@@ -79,5 +79,13 @@
         "type": "String"
       }
     }
+  },
+  "libraryAuthorsSearchBarHintText": "Search authors",
+  "@libraryAuthorsSearchBarHintText": {
+    "description": "Text shown as a hint in the search bar of the Library Page"
+  },
+  "libraryTomesSearchBarHintText": "Search titles",
+  "@libraryTomesSearchBarHintText": {
+    "description": "Text shown as a hint in the search bar of the Library Page"
   }
 }

@@ -45,13 +45,9 @@ class _LibraryTomesPageState extends ConsumerState<LibraryTomesPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            title: Text(l10n.libraryTomesAppBarTitle),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {},
-              ),
-            ],
+            flexibleSpace: SearchBarView(
+              hintText: l10n.libraryTomesSearchBarHintText,
+            ),
           ),
           data,
           const FabAvoidingBottomPadding(),

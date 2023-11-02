@@ -45,13 +45,9 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            title: Text(l10n.libraryAuthorsAppBarTitle),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {},
-              ),
-            ],
+            flexibleSpace: SearchBarView(
+              hintText: l10n.libraryAuthorsSearchBarHintText,
+            ),
           ),
           data,
           const FabAvoidingBottomPadding(),

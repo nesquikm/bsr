@@ -5,6 +5,7 @@ export 'author_tomes_sliver.dart';
 export 'fab_avoiding_bottom_padding.dart';
 export 'fullscreen_empty_library.dart';
 export 'remove_tome.dart';
+export 'search_bar_view.dart';
 export 'tome_card.dart';
 export 'tome_list_tile.dart';
 export 'tome_list_tile_card.dart';

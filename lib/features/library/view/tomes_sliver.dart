@@ -10,15 +10,20 @@ class TomesSliver extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverGrid.builder(
-      itemBuilder: (context, index) => TomeCard(
-        tome: tomes.elementAt(index),
-        ref: ref,
-      ),
-      itemCount: tomes.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 9 / 16,
+    return SliverPadding(
+      padding: const EdgeInsets.all(16),
+      sliver: SliverGrid.builder(
+        itemBuilder: (context, index) => TomeCard(
+          tome: tomes.elementAt(index),
+          ref: ref,
+        ),
+        itemCount: tomes.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 9 / 16,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+        ),
       ),
     );
   }
