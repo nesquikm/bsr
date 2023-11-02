@@ -49,7 +49,7 @@ Future<Map<String, CachedTome>> tomeLibrarySearch(
       },
   };
 
-  return Map.fromIterable(
+  return Map.fromEntries(
     tomeList.entries.where(
       (element) => ids.contains(element.key),
     ),
