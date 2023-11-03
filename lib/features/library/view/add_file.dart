@@ -12,6 +12,12 @@ Future<void> addFile({
 }) async {
   final log = Logger('addFile');
 
+  final globalContext = GlobalKeys.rootNavigatorKey.currentContext!;
+
+  if (globalContext.mounted) {
+    ScaffoldMessenger.of(globalContext).hideCurrentSnackBar();
+  }
+
   final result = await FilePicker.platform.pickFiles(
       // TODO(nesquikm): Why it doesn't work?
       // type: FileType.custom,
@@ -45,7 +51,6 @@ Future<void> addFile({
     try {
       id = await provider.addFile(path);
     } on DuplicateTomeException {
-      final globalContext = GlobalKeys.rootNavigatorKey.currentContext!;
       if (globalContext.mounted) {
         final l10n = globalContext.l10n;
         ScaffoldMessenger.of(globalContext).showSnackBar(
@@ -65,8 +70,6 @@ Future<void> addFile({
     log.info('Added file $path with id $id');
     added++;
   }
-
-  final globalContext = GlobalKeys.rootNavigatorKey.currentContext!;
 
   if (globalContext.mounted) {
     final l10n = globalContext.l10n;
