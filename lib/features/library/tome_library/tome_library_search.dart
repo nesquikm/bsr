@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bsr/features/library/library.dart';
-import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -54,40 +53,4 @@ Future<Map<String, CachedTome>> tomeLibrarySearch(
       (element) => ids.contains(element.key),
     ),
   );
-}
-
-Set<String> filterSearchIndex(
-  Map<String, Set<String>> searchIndex,
-  String searchText,
-) {
-  final searchWords = getWordsFromString(searchText);
-
-  if (searchWords.isEmpty) {
-    return Set.from(searchIndex.values.flattened);
-  }
-
-  final a = searchWords.fold(
-    <String>{},
-    (previousValue, searchWord) {
-      final subResult = searchIndex.entries
-          .where(
-        (index) => index.key.contains(searchWord),
-      )
-          .fold(
-        <String>{},
-        (previousValue, element) => {
-          ...previousValue,
-          ...element.value,
-        },
-      );
-
-      return previousValue.isEmpty
-          ? subResult
-          : previousValue.intersection(
-              subResult,
-            );
-    },
-  );
-
-  return a;
 }

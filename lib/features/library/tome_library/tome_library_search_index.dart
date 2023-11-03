@@ -62,17 +62,3 @@ Future<TomeLibrarySearchIndexData> tomeLibrarySearchIndex(
     titleWords: titleWords,
   );
 }
-
-final _whitespacesRegex = RegExp(r'[^\s]*\s*');
-
-Set<String> getWordsFromString(String text) {
-  return Set.from(
-    _whitespacesRegex
-        .allMatches(text)
-        .map((e) => e[0] ?? '')
-        .map(
-          (word) => word.trim().toLowerCase(),
-        )
-        .where((word) => word.isNotEmpty),
-  );
-}

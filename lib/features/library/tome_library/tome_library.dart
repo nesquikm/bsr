@@ -10,6 +10,7 @@ export 'sorted_by_title.dart';
 export 'tome_library_search.dart';
 export 'tome_library_search_index.dart';
 export 'tome_list/tome_list.dart';
+export 'utils.dart';
 
 part 'tome_library.g.dart';
 
