@@ -12,8 +12,9 @@ part 'grouped_by_author_sorted_by_title.g.dart';
 Future<SplayTreeMap<String, LinkedHashMap<String, CachedTome>>>
     tomeLibraryGroupedByAuthorAndSortedByTitle(
   TomeLibraryGroupedByAuthorAndSortedByTitleRef ref,
+  TomeLibrarySearchData data,
 ) async {
-  final tomeList = await ref.watch(tomeLibraryProvider.future);
+  final tomeList = await ref.watch(tomeLibrarySearchProvider(data).future);
   final result = SplayTreeMap<String, LinkedHashMap<String, CachedTome>>(
     (a, b) => a.compareTo(b),
   );

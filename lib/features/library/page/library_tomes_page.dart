@@ -15,12 +15,18 @@ class LibraryTomesPage extends ConsumerStatefulWidget {
 
 class _LibraryTomesPageState extends ConsumerState<LibraryTomesPage> {
   final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   @override
   void initState() {
     super.initState();
 
-    _searchController.addListener(() {});
+    _searchQuery = _searchController.text;
+    _searchController.addListener(() {
+      setState(() {
+        _searchQuery = _searchController.text;
+      });
+    });
   }
 
   @override
@@ -28,7 +34,9 @@ class _LibraryTomesPageState extends ConsumerState<LibraryTomesPage> {
     final l10n = context.l10n;
 
     final result = ref.watch(
-      tomeLibrarySortedByTitleProvider,
+      tomeLibrarySortedByTitleProvider(
+        TomeLibrarySearchData.titles(_searchQuery),
+      ),
     );
 
     final data = switch (result) {

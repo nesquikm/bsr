@@ -11,10 +11,11 @@ part 'sorted_by_title.g.dart';
 @riverpod
 Future<LinkedHashMap<String, CachedTome>> tomeLibrarySortedByTitle(
   TomeLibrarySortedByTitleRef ref,
+  TomeLibrarySearchData data,
 ) async {
   return TomeLibrary.getSortedByTitle(
     await ref.watch(
-      tomeLibraryProvider.future,
+      tomeLibrarySearchProvider(data).future,
     ),
   );
 }

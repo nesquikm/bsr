@@ -38,8 +38,11 @@ void main() {
       // TODO(nesquikm): why do we need to call this?
       await expectTomeCount(6);
       await expectLater(
-        container!
-            .read(tomeLibraryGroupedByAuthorAndSortedByTitleProvider.future),
+        container!.read(
+          tomeLibraryGroupedByAuthorAndSortedByTitleProvider(
+            const TomeLibrarySearchData.everywhere(''),
+          ).future,
+        ),
         completion(
           (Map<String, Map<String, CachedTome>> res) {
             final authors = res.keys.toList();
