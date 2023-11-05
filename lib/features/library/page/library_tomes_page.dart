@@ -14,6 +14,15 @@ class LibraryTomesPage extends ConsumerStatefulWidget {
 }
 
 class _LibraryTomesPageState extends ConsumerState<LibraryTomesPage> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _searchController.addListener(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -47,6 +56,7 @@ class _LibraryTomesPageState extends ConsumerState<LibraryTomesPage> {
           SliverAppBar(
             flexibleSpace: SearchBarView(
               hintText: l10n.libraryTomesSearchBarHintText,
+              controller: _searchController,
             ),
           ),
           data,

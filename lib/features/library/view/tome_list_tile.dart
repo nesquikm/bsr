@@ -39,6 +39,7 @@ class TomeListTile extends StatelessWidget {
     return ListTile(
       leading: leading,
       minLeadingWidth: 56,
+      contentPadding: const EdgeInsets.only(left: 16),
       title: Text(
         tomeInfo.title ?? l10n.unknownTomeTitle,
         maxLines: 2,
