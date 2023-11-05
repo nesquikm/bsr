@@ -186,7 +186,26 @@ void main() {
       );
     });
 
-    test('Check filtered results: authors', () async {
+    test('Check filtered results: authors, complex', () async {
+      await setDirectory();
+      // TODO(nesquikm): why do we need to call this?
+      await expectTomeCount(6);
+      await expectLater(
+        container!.read(
+          tomeLibrarySearchProvider(
+            const TomeLibrarySearchData.authors('nonexisting author'),
+          ).future,
+        ),
+        completion(
+          (Map<String, CachedTome> res) {
+            expect(res.keys, <String>{});
+            return true;
+          },
+        ),
+      );
+    });
+
+    test('Check filtered results: titles', () async {
       await setDirectory();
       // TODO(nesquikm): why do we need to call this?
       await expectTomeCount(6);
@@ -220,6 +239,25 @@ void main() {
         container!.read(
           tomeLibrarySearchProvider(
             const TomeLibrarySearchData.titles('nonexisting'),
+          ).future,
+        ),
+        completion(
+          (Map<String, CachedTome> res) {
+            expect(res.keys, <String>{});
+            return true;
+          },
+        ),
+      );
+    });
+
+    test('Check filtered results: titles, complex', () async {
+      await setDirectory();
+      // TODO(nesquikm): why do we need to call this?
+      await expectTomeCount(6);
+      await expectLater(
+        container!.read(
+          tomeLibrarySearchProvider(
+            const TomeLibrarySearchData.titles('someTitle0 nonexisting'),
           ).future,
         ),
         completion(

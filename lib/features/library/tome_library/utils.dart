@@ -24,9 +24,9 @@ Set<String> filterSearchIndex(
     return Set.from(searchIndex.values.flattened);
   }
 
-  final a = searchWords.fold(
+  return searchWords.foldIndexed(
     <String>{},
-    (previousValue, searchWord) {
+    (index, previousValue, searchWord) {
       final subResult = searchIndex.entries
           .where(
         (index) => index.key.contains(searchWord),
@@ -39,13 +39,11 @@ Set<String> filterSearchIndex(
         },
       );
 
-      return previousValue.isEmpty
+      return index == 0
           ? subResult
           : previousValue.intersection(
               subResult,
             );
     },
   );
-
-  return a;
 }
