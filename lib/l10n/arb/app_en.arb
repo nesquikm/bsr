@@ -33,6 +33,10 @@
   "@libraryEmptyMessage": {
     "description": "Text shown in the Library Page when the library is empty"
   },
+  "libraryEmptySearchMessage": "Your search did not match anything",
+  "@libraryEmptySearchMessage": {
+    "description": "Text shown in the Library Page when the search did not match anything"
+  },
   "addedFilesMessage": "Added {added} files, failed to add {failed} files",
   "@addedFilesMessage": {
     "description": "Text shown in the Library Page when files are added",

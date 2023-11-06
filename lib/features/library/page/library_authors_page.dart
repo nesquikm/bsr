@@ -44,7 +44,9 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
         :final valueOrNull?,
       ) =>
         valueOrNull.entries.isEmpty
-            ? const FullscreenEmptyLibrarySliver()
+            ? FullscreenEmptyLibrarySliver(
+                isSearching: _searchQuery.isNotEmpty,
+              )
             : AuthorTomesSliver(
                 authorTomes: valueOrNull.entries,
                 ref: ref,

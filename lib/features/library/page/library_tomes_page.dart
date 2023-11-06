@@ -44,7 +44,9 @@ class _LibraryTomesPageState extends ConsumerState<LibraryTomesPage> {
         :final valueOrNull?,
       ) =>
         valueOrNull.entries.isEmpty
-            ? const FullscreenEmptyLibrarySliver()
+            ? FullscreenEmptyLibrarySliver(
+                isSearching: _searchQuery.isNotEmpty,
+              )
             : TomesSliver(
                 tomes: valueOrNull.values,
                 ref: ref,
