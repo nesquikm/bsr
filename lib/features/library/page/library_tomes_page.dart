@@ -39,26 +39,26 @@ class _LibraryTomesPageState extends ConsumerState<LibraryTomesPage> {
       ),
     );
 
-    final data = switch (result) {
-      AsyncValue<LinkedHashMap<String, CachedTome>>(
-        :final valueOrNull?,
-      ) =>
-        valueOrNull.entries.isEmpty
+    final data = result.when(
+      data: (LinkedHashMap<String, CachedTome> data) {
+        return data.entries.isEmpty
             ? FullscreenEmptyLibrarySliver(
                 isSearching: _searchQuery.isNotEmpty,
               )
             : TomesSliver(
-                tomes: valueOrNull.values,
+                tomes: data.values,
                 ref: ref,
-              ),
-      AsyncValue(
-        :final error?,
-      ) =>
-        FullscreenErrorMessageSliver(
+              );
+      },
+      error: (Object error, StackTrace stackTrace) {
+        return FullscreenErrorMessageSliver(
           text: l10n.errorLoadingLibraryMessage(error.toString()),
-        ),
-      _ => const FullscreenProgressIndicatorSliver(),
-    };
+        );
+      },
+      loading: () {
+        return const FullscreenProgressIndicatorSliver();
+      },
+    );
 
     return Scaffold(
       body: CustomScrollView(

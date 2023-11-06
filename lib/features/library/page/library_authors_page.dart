@@ -39,26 +39,26 @@ class _LibraryAuthorsPageState extends ConsumerState<LibraryAuthorsPage> {
       ),
     );
 
-    final data = switch (result) {
-      AsyncValue<SplayTreeMap<String, LinkedHashMap<String, CachedTome>>>(
-        :final valueOrNull?,
-      ) =>
-        valueOrNull.entries.isEmpty
+    final data = result.when(
+      data: (SplayTreeMap<String, LinkedHashMap<String, CachedTome>> data) {
+        return data.entries.isEmpty
             ? FullscreenEmptyLibrarySliver(
                 isSearching: _searchQuery.isNotEmpty,
               )
             : AuthorTomesSliver(
-                authorTomes: valueOrNull.entries,
+                authorTomes: data.entries,
                 ref: ref,
-              ),
-      AsyncValue(
-        :final error?,
-      ) =>
-        FullscreenErrorMessageSliver(
+              );
+      },
+      error: (Object error, StackTrace stackTrace) {
+        return FullscreenErrorMessageSliver(
           text: l10n.errorLoadingLibraryMessage(error.toString()),
-        ),
-      _ => const FullscreenProgressIndicatorSliver(),
-    };
+        );
+      },
+      loading: () {
+        return const FullscreenProgressIndicatorSliver();
+      },
+    );
 
     return Scaffold(
       body: CustomScrollView(
