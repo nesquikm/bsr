@@ -91,5 +91,15 @@ void main() {
         expected,
       );
     });
+
+    test('Read content', () async {
+      await tome!.open();
+      final content = await tome!.content;
+      expect(content.sections.length, 5);
+      for (final section in content.sections) {
+        expect(section.html, isNotEmpty);
+        expect(section.html, contains('<p>'));
+      }
+    });
   });
 }

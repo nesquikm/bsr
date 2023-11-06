@@ -4,12 +4,14 @@ import 'dart:typed_data';
 import 'package:async/async.dart';
 import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/epub_tome.dart';
 import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/fb2_tome.dart';
+import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/tome_content.dart';
 import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/tome_info.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:image/image.dart';
 
 export 'tome.dart';
+export 'tome_content.dart';
 export 'tome_info.dart';
 
 abstract class Tome {
@@ -64,6 +66,7 @@ abstract class Tome {
   Future<void> close();
   TomeInfo get tomeInfo;
   Future<Image?> get coverImage;
+  Future<TomeContent> get content;
 
   Future<String> calcDigest({int chunkSize = Tome.defaultChunkSize}) async {
     final file = File(filePath);

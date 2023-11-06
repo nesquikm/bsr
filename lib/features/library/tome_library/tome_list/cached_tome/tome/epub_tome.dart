@@ -48,6 +48,22 @@ class EpubTome extends Tome {
   }
 
   @override
+  Future<TomeContent> get content async {
+    assert(_isOpen, 'Should be opened before accessing content');
+
+    final futures = _epubBookRef!.Content?.Html?.entries.map(
+          (entry) async => TomeContentSection(
+            html: await entry.value.readContentAsText(),
+          ),
+        ) ??
+        [];
+
+    final sections = await Future.wait(futures);
+
+    return TomeContent(sections: sections);
+  }
+
+  @override
   Future<void> close() async {
     _isOpen = false;
     _epubBookRef = null;

@@ -50,6 +50,20 @@ class FB2Tome extends Tome {
     return base64ToImage(_fb2Book!.description.coverpageImageBytes);
   }
 
+  @override
+  Future<TomeContent> get content async {
+    assert(_isOpen, 'Should be opened before accessing content');
+
+    final sections = _fb2Book!.body.sections
+            ?.map(
+              (section) => TomeContentSection(html: section.content ?? ''),
+            )
+            .toList() ??
+        [];
+
+    return TomeContent(sections: sections);
+  }
+
   Image? base64ToImage(String? base64Bytes) {
     if (base64Bytes == null) {
       return null;

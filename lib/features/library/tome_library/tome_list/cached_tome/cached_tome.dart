@@ -119,4 +119,14 @@ class CachedTome {
 
   TomeInfo get tomeInfo => _tomeInfo;
   String? get coverImagePath => _tomeCoverImageFilepath;
+
+  Future<TomeContent> get content async {
+    await _open();
+
+    final content = await _tome!.content;
+
+    await _close();
+
+    return content;
+  }
 }

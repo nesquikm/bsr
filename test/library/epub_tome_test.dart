@@ -46,5 +46,15 @@ void main() {
         'ce4e62b68ae006cf657c05b189594996b879f3eb52215d74647d293f6d81c5d9',
       );
     });
+
+    test('Read content', () async {
+      await tome!.open();
+      final content = await tome!.content;
+      expect(content.sections.length, 6);
+      for (final section in content.sections) {
+        expect(section.html, isNotEmpty);
+        expect(section.html, contains('<html'));
+      }
+    });
   });
 }
