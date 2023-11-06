@@ -6,5 +6,7 @@ import 'package:go_router/go_router.dart';
 GoRoute get readerRoute => GoRoute(
       parentNavigatorKey: GlobalKeys.rootNavigatorKey,
       path: AppRoute.reader.path,
-      builder: (context, state) => const ReaderPage(),
+      builder: (context, state) => ReaderPage(
+        tomeId: state.pathParameters[routeParamTomeId]!,
+      ),
     );

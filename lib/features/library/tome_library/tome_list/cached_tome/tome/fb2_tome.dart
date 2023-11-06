@@ -5,9 +5,12 @@ import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/tom
 import 'package:crypto/crypto.dart';
 import 'package:fb2_parse/fb2_parse.dart';
 import 'package:image/image.dart';
+import 'package:logging/logging.dart';
 
 class FB2Tome extends Tome {
   FB2Tome(super.filePath);
+
+  final _log = Logger('FB2Tome');
 
   FB2Book? _fb2Book;
   bool _isOpen = false;
@@ -47,12 +50,17 @@ class FB2Tome extends Tome {
   @override
   Future<Image?> get coverImage async {
     assert(_isOpen, 'Should be opened before accessing coverImage');
+
+    _log.fine('get coverImage for $filePath');
+
     return base64ToImage(_fb2Book!.description.coverpageImageBytes);
   }
 
   @override
   Future<TomeContent> get content async {
     assert(_isOpen, 'Should be opened before accessing content');
+
+    _log.fine('get content for $filePath');
 
     final sections = _fb2Book!.body.sections
             ?.map(

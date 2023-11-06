@@ -122,6 +122,7 @@ class CachedTome {
 
   Future<TomeContent> get content async {
     await _open();
+    await _tome!.open();
 
     final content = await _tome!.content;
 

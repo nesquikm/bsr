@@ -3,6 +3,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+const routeParamTomeId = 'tomeId';
+
 enum AppRoute {
   libraryTomes(
     '/library_tomes',
@@ -20,7 +22,7 @@ enum AppRoute {
   ),
 
   reader(
-    'reader',
+    'reader/:$routeParamTomeId',
     saveLocation: true,
   ),
 
@@ -61,34 +63,56 @@ extension NavigationHelper on WidgetRef {
   void goFurther(
     AppRoute appRoute, {
     bool preserveQueryParams = false,
+    Map<String, dynamic> queryParameters = const {},
+    Map<String, String> pathParameters = const <String, String>{},
   }) {
     if (!context.mounted) return;
 
     final routerPersistenceState =
         read(routerPersistenceProvider.notifier).getCachedState();
 
-    var resultLocation = Uri.parse(routerPersistenceState.fullPath);
-    // We have query params in old path that we should preserve, so we must
-    // update it manually
-    if (resultLocation.hasQuery && preserveQueryParams) {
-      final newLocation = Uri.parse(appRoute.path);
-      final query = <String, dynamic>{}
-        ..addAll(resultLocation.queryParameters)
-        ..addAll(newLocation.queryParameters);
+    final path = '${routerPersistenceState.fullPath}/${appRoute.path}';
 
-      resultLocation = resultLocation.replace(
-        path: '${resultLocation.path}/${newLocation.path}',
-        queryParameters: query,
-      );
-    } else {
-      // old location do not have query, new one may have it, we dont care
-      resultLocation = resultLocation.replace(
-        path: '${resultLocation.path}/${appRoute.path}',
-      );
+    final oldUrl = Uri.parse(routerPersistenceState.fullPath);
+    final oldQueryParameters =
+        preserveQueryParams ? oldUrl.queryParameters : null;
+    final newQueryParameters = {...?oldQueryParameters, ...queryParameters};
+
+    final encodedParams = <String, String>{
+      for (final MapEntry<String, String> param in pathParameters.entries)
+        param.key: Uri.encodeComponent(param.value),
+    };
+    final location = _patternToPath(path, encodedParams);
+
+    final resultLocation = Uri(
+      path: location,
+      queryParameters: newQueryParameters.isEmpty ? null : newQueryParameters,
+    ).toString();
+
+    return GoRouter.of(context).go(resultLocation);
+  }
+
+  /// Reconstructs the full path from a [pattern] and path parameters.
+  ///
+  /// This is useful for restoring the original path from a [RegExpMatch].
+  /// This thing is directly copied from the go_router package ¯\_(ツ)_/¯
+  String _patternToPath(String pattern, Map<String, String> pathParameters) {
+    final buffer = StringBuffer();
+    var start = 0;
+    for (final match in _parameterRegExp.allMatches(pattern)) {
+      if (match.start > start) {
+        buffer.write(pattern.substring(start, match.start));
+      }
+      final name = match[1]!;
+      buffer.write(pathParameters[name]);
+      start = match.end;
     }
 
-    return GoRouter.of(context).go(
-      Uri.decodeComponent(resultLocation.toString()),
-    );
+    if (start < pattern.length) {
+      buffer.write(pattern.substring(start));
+    }
+    return buffer.toString();
   }
 }
+
+final RegExp _parameterRegExp = RegExp(r':(\w+)(\((?:\\.|[^\\()])+\))?');

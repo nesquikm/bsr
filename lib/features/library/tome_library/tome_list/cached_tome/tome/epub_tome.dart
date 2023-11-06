@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/tome.dart';
 import 'package:epubx/epubx.dart';
+import 'package:logging/logging.dart';
 
 class EpubTome extends Tome {
   EpubTome(super.filePath);
+
+  final _log = Logger('EpubTome');
 
   EpubBookRef? _epubBookRef;
   bool _isOpen = false;
@@ -44,12 +47,16 @@ class EpubTome extends Tome {
   Future<Image?> get coverImage async {
     assert(_isOpen, 'Should be opened before accessing coverImage');
 
+    _log.fine('get coverImage for $filePath');
+
     return _epubBookRef!.readCover();
   }
 
   @override
   Future<TomeContent> get content async {
     assert(_isOpen, 'Should be opened before accessing content');
+
+    _log.fine('get content for $filePath');
 
     final futures = _epubBookRef!.Content?.Html?.entries.map(
           (entry) async => TomeContentSection(

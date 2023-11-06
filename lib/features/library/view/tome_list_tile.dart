@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bsr/app/router/router.dart';
 import 'package:bsr/features/library/library.dart';
 import 'package:bsr/l10n/l10n.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +67,14 @@ class TomeListTile extends StatelessWidget {
           }
         },
       ),
+      onTap: () {
+        ref.goFurther(
+          AppRoute.reader,
+          pathParameters: {
+            routeParamTomeId: tome.id,
+          },
+        );
+      },
     );
   }
 }
