@@ -9,6 +9,7 @@ export 'grouped_by_author_sorted_by_title.dart';
 export 'sorted_by_title.dart';
 export 'tome_library_search.dart';
 export 'tome_library_search_index.dart';
+export 'tome_library_tome.dart';
 export 'tome_list/tome_list.dart';
 export 'utils.dart';
 

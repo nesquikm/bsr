@@ -174,7 +174,7 @@ void main() {
       await expectLater(
         container!.read(
           tomeLibrarySearchProvider(
-            const TomeLibrarySearchData.authors('nonexisting'),
+            const TomeLibrarySearchData.authors('nonexistent'),
           ).future,
         ),
         completion(
@@ -193,7 +193,7 @@ void main() {
       await expectLater(
         container!.read(
           tomeLibrarySearchProvider(
-            const TomeLibrarySearchData.authors('nonexisting author'),
+            const TomeLibrarySearchData.authors('nonexistent author'),
           ).future,
         ),
         completion(
@@ -238,7 +238,7 @@ void main() {
       await expectLater(
         container!.read(
           tomeLibrarySearchProvider(
-            const TomeLibrarySearchData.titles('nonexisting'),
+            const TomeLibrarySearchData.titles('nonexistent'),
           ).future,
         ),
         completion(
@@ -257,7 +257,7 @@ void main() {
       await expectLater(
         container!.read(
           tomeLibrarySearchProvider(
-            const TomeLibrarySearchData.titles('someTitle0 nonexisting'),
+            const TomeLibrarySearchData.titles('someTitle0 nonexistent'),
           ).future,
         ),
         completion(
