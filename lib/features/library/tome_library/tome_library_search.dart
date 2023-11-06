@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bsr/features/common/common.dart';
 import 'package:bsr/features/library/library.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -24,6 +25,8 @@ Future<Map<String, CachedTome>> tomeLibrarySearch(
   TomeLibrarySearchRef ref,
   TomeLibrarySearchData data,
 ) async {
+  await ref.debounceAndCancel();
+
   final tomeList = await ref.watch(tomeLibraryProvider.future);
   final searchIndex = await ref.watch(tomeLibrarySearchIndexProvider.future);
 
