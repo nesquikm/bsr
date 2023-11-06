@@ -6,6 +6,7 @@ Widget addFABButton({
   required WidgetRef ref,
 }) {
   return FloatingActionButton(
+    heroTag: null,
     onPressed: () {
       addFile(
         ref: ref,
