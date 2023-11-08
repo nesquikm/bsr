@@ -58,16 +58,28 @@ class EpubTome extends Tome {
 
     _log.fine('get content for $filePath');
 
-    final futures = _epubBookRef!.Content?.Html?.entries.map(
+    final sectionsFutures = _epubBookRef!.Content?.Html?.entries.map(
           (entry) async => TomeContentSection(
             html: await entry.value.readContentAsText(),
           ),
         ) ??
         [];
 
-    final sections = await Future.wait(futures);
+    final sections = await Future.wait(sectionsFutures);
 
-    return TomeContent(sections: sections);
+    final images = <String, List<int>>{};
+
+    if (_epubBookRef!.Content?.Images?.entries != null) {
+      for (final image in _epubBookRef!.Content!.Images!.entries) {
+        final content = await image.value.readContentAsBytes();
+        images[image.key] = content;
+      }
+    }
+
+    return TomeContent(
+      sections: sections,
+      images: images,
+    );
   }
 
   @override

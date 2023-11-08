@@ -69,15 +69,35 @@ class FB2Tome extends Tome {
             .toList() ??
         [];
 
-    return TomeContent(sections: sections);
+    final images = Map.fromEntries(
+      _fb2Book!.images.map(
+        (image) => MapEntry(
+          image.name,
+          base64ToBytes(image.bytes)!,
+        ),
+      ),
+    );
+
+    return TomeContent(
+      sections: sections,
+      images: images,
+    );
   }
 
-  Image? base64ToImage(String? base64Bytes) {
+  List<int>? base64ToBytes(String? base64Bytes) {
     if (base64Bytes == null) {
       return null;
     }
 
-    final bytes = base64Decode(base64Bytes.replaceAll('\n', ''));
+    return base64Decode(base64Bytes.replaceAll('\n', ''));
+  }
+
+  Image? base64ToImage(String? base64Bytes) {
+    final bytes = base64ToBytes(base64Bytes);
+    if (bytes == null) {
+      return null;
+    }
+
     final image = decodeImage(bytes);
 
     return image;

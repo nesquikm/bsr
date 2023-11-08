@@ -136,6 +136,7 @@ abstract class _TomeContentSection implements TomeContentSection {
 /// @nodoc
 mixin _$TomeContent {
   List<TomeContentSection> get sections => throw _privateConstructorUsedError;
+  Map<String, List<int>> get images => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TomeContentCopyWith<TomeContent> get copyWith =>
@@ -148,7 +149,7 @@ abstract class $TomeContentCopyWith<$Res> {
           TomeContent value, $Res Function(TomeContent) then) =
       _$TomeContentCopyWithImpl<$Res, TomeContent>;
   @useResult
-  $Res call({List<TomeContentSection> sections});
+  $Res call({List<TomeContentSection> sections, Map<String, List<int>> images});
 }
 
 /// @nodoc
@@ -165,12 +166,17 @@ class _$TomeContentCopyWithImpl<$Res, $Val extends TomeContent>
   @override
   $Res call({
     Object? sections = null,
+    Object? images = null,
   }) {
     return _then(_value.copyWith(
       sections: null == sections
           ? _value.sections
           : sections // ignore: cast_nullable_to_non_nullable
               as List<TomeContentSection>,
+      images: null == images
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as Map<String, List<int>>,
     ) as $Val);
   }
 }
@@ -183,7 +189,7 @@ abstract class _$$TomeContentImplCopyWith<$Res>
       __$$TomeContentImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<TomeContentSection> sections});
+  $Res call({List<TomeContentSection> sections, Map<String, List<int>> images});
 }
 
 /// @nodoc
@@ -198,12 +204,17 @@ class __$$TomeContentImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? sections = null,
+    Object? images = null,
   }) {
     return _then(_$TomeContentImpl(
       sections: null == sections
           ? _value._sections
           : sections // ignore: cast_nullable_to_non_nullable
               as List<TomeContentSection>,
+      images: null == images
+          ? _value._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as Map<String, List<int>>,
     ));
   }
 }
@@ -211,8 +222,11 @@ class __$$TomeContentImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$TomeContentImpl implements _TomeContent {
-  const _$TomeContentImpl({required final List<TomeContentSection> sections})
-      : _sections = sections;
+  const _$TomeContentImpl(
+      {required final List<TomeContentSection> sections,
+      required final Map<String, List<int>> images})
+      : _sections = sections,
+        _images = images;
 
   final List<TomeContentSection> _sections;
   @override
@@ -222,9 +236,17 @@ class _$TomeContentImpl implements _TomeContent {
     return EqualUnmodifiableListView(_sections);
   }
 
+  final Map<String, List<int>> _images;
+  @override
+  Map<String, List<int>> get images {
+    if (_images is EqualUnmodifiableMapView) return _images;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_images);
+  }
+
   @override
   String toString() {
-    return 'TomeContent(sections: $sections)';
+    return 'TomeContent(sections: $sections, images: $images)';
   }
 
   @override
@@ -232,12 +254,15 @@ class _$TomeContentImpl implements _TomeContent {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TomeContentImpl &&
-            const DeepCollectionEquality().equals(other._sections, _sections));
+            const DeepCollectionEquality().equals(other._sections, _sections) &&
+            const DeepCollectionEquality().equals(other._images, _images));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_sections));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_sections),
+      const DeepCollectionEquality().hash(_images));
 
   @JsonKey(ignore: true)
   @override
@@ -248,10 +273,13 @@ class _$TomeContentImpl implements _TomeContent {
 
 abstract class _TomeContent implements TomeContent {
   const factory _TomeContent(
-      {required final List<TomeContentSection> sections}) = _$TomeContentImpl;
+      {required final List<TomeContentSection> sections,
+      required final Map<String, List<int>> images}) = _$TomeContentImpl;
 
   @override
   List<TomeContentSection> get sections;
+  @override
+  Map<String, List<int>> get images;
   @override
   @JsonKey(ignore: true)
   _$$TomeContentImplCopyWith<_$TomeContentImpl> get copyWith =>

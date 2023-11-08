@@ -33,32 +33,28 @@ class _ReaderPageState extends ConsumerState<ReaderPage> {
 
     final data = contentResult.when(
       data: (TomeContent data) {
-        return TomeReaderSectionSliver(
+        return TomeReaderSections(
           content: data,
           ref: ref,
         );
       },
       error: (Object error, StackTrace stackTrace) {
-        return FullscreenErrorMessageSliver(
+        return FullscreenErrorMessage(
           text: l10n.errorLoadingLibraryMessage(error.toString()),
         );
       },
       loading: () {
-        return const FullscreenProgressIndicatorSliver();
+        return const FullscreenProgressIndicator();
       },
     );
 
     final title = tomeResult.valueOrNull?.tomeInfo.title ?? '';
 
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            title: Text(title),
-          ),
-          data,
-        ],
+      appBar: AppBar(
+        title: Text(title),
       ),
+      body: data,
     );
   }
 }

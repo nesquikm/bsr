@@ -13,5 +13,6 @@ sealed class TomeContentSection with _$TomeContentSection {
 sealed class TomeContent with _$TomeContent {
   const factory TomeContent({
     required List<TomeContentSection> sections,
+    required Map<String, List<int>> images,
   }) = _TomeContent;
 }

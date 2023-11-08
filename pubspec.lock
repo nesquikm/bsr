@@ -241,6 +241,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+  csslib:
+    dependency: transitive
+    description:
+      name: csslib
+      sha256: "831883fb353c8bdc1d71979e5b342c7d88acfbc643113c14ae51e2442ea0f20f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.17.3"
   custom_lint:
     dependency: "direct dev"
     description:
@@ -366,6 +374,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_html:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "0153316e483c40451cee376775b5cc389827f5bb"
+      url: "git@github.com:nesquikm/flutter_html.git"
+    source: git
+    version: "3.0.0-beta.2"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -501,6 +518,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.6"
+  html:
+    dependency: "direct main"
+    description:
+      name: html
+      sha256: "3a7812d5bcd2894edf53dfaf8cd640876cf6cef50a8f238745c8b8120ea74d3a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.15.4"
   http:
     dependency: transitive
     description:
@@ -573,6 +598,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.7.1"
+  list_counter:
+    dependency: transitive
+    description:
+      name: list_counter
+      sha256: c447ae3dfcd1c55f0152867090e67e219d42fe6d4f2807db4bbe8b8d69912237
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   logging:
     dependency: "direct main"
     description:
@@ -853,6 +886,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.27.7"
+  scrollable_positioned_list:
+    dependency: "direct main"
+    description:
+      name: scrollable_positioned_list
+      sha256: "1b54d5f1329a1e263269abc9e2543d90806131aa14fe7c6062a8054d57249287"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.8"
   shelf:
     dependency: transitive
     description:
