@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -87,5 +88,22 @@ abstract class Tome {
     }
 
     return output.events.single.toString();
+  }
+
+  static List<int>? base64ToBytes(String? base64Bytes) {
+    if (base64Bytes == null) {
+      return null;
+    }
+
+    return base64Decode(base64Bytes.replaceAll('\n', ''));
+  }
+
+  static Image? base64ToImage(String? base64Bytes) {
+    final bytes = base64ToBytes(base64Bytes);
+    if (bytes == null) {
+      return null;
+    }
+
+    return decodeImage(bytes);
   }
 }

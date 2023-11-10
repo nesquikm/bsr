@@ -24,11 +24,20 @@ class TomeReaderSection extends StatelessWidget {
         Html(
           data: section.html,
           extensions: [
-            TagExtension(
-              tagsToExtend: {'img'},
+            MatcherExtension(
+              matcher: (ExtensionContext context) {
+                if (!['img'].contains(context.elementName)) {
+                  return false;
+                }
+                final src = context.node.attributes['src'] ?? '';
+                if (src.contains('base64,')) {
+                  return false;
+                }
+                return true;
+              },
               builder: (imageContext) {
-                final url =
-                    imageContext.attributes['src']!.replaceAll('../', '');
+                final src = imageContext.attributes['src'] ?? '';
+                final url = src.replaceAll('../', '');
                 final content = Uint8List.fromList(images[url]!);
                 return Image(
                   image: MemoryImage(content),

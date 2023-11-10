@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:archive/archive_io.dart';
 import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/tome.dart';
 import 'package:crypto/crypto.dart';
@@ -53,7 +51,7 @@ class FB2Tome extends Tome {
 
     _log.fine('get coverImage for $filePath');
 
-    return base64ToImage(_fb2Book!.description.coverpageImageBytes);
+    return Tome.base64ToImage(_fb2Book!.description.coverpageImageBytes);
   }
 
   @override
@@ -73,7 +71,7 @@ class FB2Tome extends Tome {
       _fb2Book!.images.map(
         (image) => MapEntry(
           image.name,
-          base64ToBytes(image.bytes)!,
+          Tome.base64ToBytes(image.bytes)!,
         ),
       ),
     );
@@ -82,25 +80,6 @@ class FB2Tome extends Tome {
       sections: sections,
       images: images,
     );
-  }
-
-  List<int>? base64ToBytes(String? base64Bytes) {
-    if (base64Bytes == null) {
-      return null;
-    }
-
-    return base64Decode(base64Bytes.replaceAll('\n', ''));
-  }
-
-  Image? base64ToImage(String? base64Bytes) {
-    final bytes = base64ToBytes(base64Bytes);
-    if (bytes == null) {
-      return null;
-    }
-
-    final image = decodeImage(bytes);
-
-    return image;
   }
 
   @override
