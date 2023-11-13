@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bsr/features/library/tome_library/tome_list/cached_tome/tome/tome.dart';
 import 'package:epubx/epubx.dart';
 import 'package:logging/logging.dart';
+import 'package:xml/xml.dart';
 
 class EpubTome extends Tome {
   EpubTome(super.filePath);
@@ -59,9 +60,19 @@ class EpubTome extends Tome {
     _log.fine('get content for $filePath');
 
     final sectionsFutures = _epubBookRef!.Content?.Html?.entries.map(
-          (entry) async => TomeContentSection(
-            html: await entry.value.readContentAsText(),
-          ),
+          (entry) async {
+            final document = XmlDocument.parse(
+              await entry.value.readContentAsText(),
+            );
+            for (final element in document.findAllElements('script')) {
+              element.remove();
+            }
+            return TomeContentSection(
+              html:
+                  document.findAllElements('body').firstOrNull?.toXmlString() ??
+                      '',
+            );
+          },
         ) ??
         [];
 
