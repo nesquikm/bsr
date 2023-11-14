@@ -14,15 +14,20 @@ class TomeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final coverImagePath = tome.coverImagePath ?? '';
+
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.file(
-            File(tome.coverImagePath ?? ''),
-            fit: BoxFit.cover,
-          ),
+          if (coverImagePath.isNotEmpty)
+            Image.file(
+              File(coverImagePath),
+              fit: BoxFit.cover,
+            )
+          else
+            const Icon(Icons.book),
           Positioned.fill(
             child: Material(
               color: Colors.transparent,

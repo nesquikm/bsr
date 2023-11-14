@@ -26,14 +26,17 @@ class TomeListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final tomeInfo = tome.tomeInfo;
+    final coverImagePath = tome.coverImagePath ?? '';
 
     final leading = withCover
         ? ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 56),
-            child: Image.file(
-              File(tome.coverImagePath ?? ''),
-              fit: BoxFit.contain,
-            ),
+            child: coverImagePath.isNotEmpty
+                ? Image.file(
+                    File(coverImagePath),
+                    fit: BoxFit.contain,
+                  )
+                : const Icon(Icons.book),
           )
         : null;
 
