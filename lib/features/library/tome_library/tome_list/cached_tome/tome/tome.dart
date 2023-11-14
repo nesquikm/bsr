@@ -15,6 +15,8 @@ export 'tome.dart';
 export 'tome_content.dart';
 export 'tome_info.dart';
 
+final _newlineRegex = RegExp(r'[\n\r]+');
+
 abstract class Tome {
   Tome(this.filePath);
 
@@ -95,7 +97,9 @@ abstract class Tome {
       return null;
     }
 
-    return base64Decode(base64Bytes.replaceAll('\n', ''));
+    return base64Decode(
+      base64Bytes.replaceAll(_newlineRegex, '').trim(),
+    );
   }
 
   static Image? base64ToImage(String? base64Bytes) {
