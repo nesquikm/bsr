@@ -53,30 +53,45 @@ class EpubTome extends Tome {
     return _epubBookRef!.readCover();
   }
 
+  Future<List<TomeContentSection>> _getSections(
+    List<EpubChapterRef>? chapters,
+  ) async {
+    if (chapters == null) {
+      return [];
+    }
+
+    final sections = <TomeContentSection>[];
+
+    for (final chapter in chapters) {
+      final content = await _epubBookRef!
+          .Content?.Html?[chapter.ContentFileName]
+          ?.readContentAsText();
+      final document = XmlDocument.parse(content ?? '');
+      for (final element in document.findAllElements('script')) {
+        element.remove();
+      }
+      sections
+        ..add(
+          TomeContentSection(
+            html: document.findAllElements('body').firstOrNull?.toXmlString() ??
+                '',
+          ),
+        )
+        ..addAll(await _getSections(chapter.SubChapters));
+    }
+
+    return sections;
+  }
+
   @override
   Future<TomeContent> get content async {
     assert(_isOpen, 'Should be opened before accessing content');
 
     _log.fine('get content for $filePath');
 
-    final sectionsFutures = _epubBookRef!.Content?.Html?.entries.map(
-          (entry) async {
-            final document = XmlDocument.parse(
-              await entry.value.readContentAsText(),
-            );
-            for (final element in document.findAllElements('script')) {
-              element.remove();
-            }
-            return TomeContentSection(
-              html:
-                  document.findAllElements('body').firstOrNull?.toXmlString() ??
-                      '',
-            );
-          },
-        ) ??
-        [];
+    final chapters = await _epubBookRef!.getChapters();
 
-    final sections = await Future.wait(sectionsFutures);
+    final sections = await _getSections(chapters);
 
     final images = <String, List<int>>{};
 
