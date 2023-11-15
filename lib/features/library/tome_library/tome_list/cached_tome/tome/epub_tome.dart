@@ -53,7 +53,17 @@ class EpubTome extends Tome {
     return _epubBookRef!.readCover();
   }
 
-  Future<List<TomeContentSection>> _getSections(
+  TomeContentSection _getSectionFromContent(String? content) {
+    final document = XmlDocument.parse(content ?? '');
+    for (final element in document.findAllElements('script')) {
+      element.remove();
+    }
+    return TomeContentSection(
+      html: document.findAllElements('body').firstOrNull?.toXmlString() ?? '',
+    );
+  }
+
+  Future<List<TomeContentSection>> _getSectionsFromChapters(
     List<EpubChapterRef>? chapters,
   ) async {
     if (chapters == null) {
@@ -66,18 +76,35 @@ class EpubTome extends Tome {
       final content = await _epubBookRef!
           .Content?.Html?[chapter.ContentFileName]
           ?.readContentAsText();
-      final document = XmlDocument.parse(content ?? '');
-      for (final element in document.findAllElements('script')) {
-        element.remove();
-      }
+      final section = _getSectionFromContent(content);
       sections
         ..add(
-          TomeContentSection(
-            html: document.findAllElements('body').firstOrNull?.toXmlString() ??
-                '',
-          ),
+          section,
         )
-        ..addAll(await _getSections(chapter.SubChapters));
+        ..addAll(await _getSectionsFromChapters(chapter.SubChapters));
+    }
+
+    return sections;
+  }
+
+  Future<List<TomeContentSection>> _getSectionsFromSpineItems() async {
+    final spineItems = _epubBookRef!.Schema?.Package?.Spine?.Items;
+    final manifestItems = _epubBookRef!.Schema?.Package?.Manifest?.Items;
+    if (spineItems == null || manifestItems == null) {
+      return [];
+    }
+
+    final sections = <TomeContentSection>[];
+
+    for (final spineItem in spineItems) {
+      final manifestItem = manifestItems.firstWhere(
+        (manifestItem) => manifestItem.Id == spineItem.IdRef,
+      );
+      final content = await _epubBookRef!.Content?.Html?[manifestItem.Href]
+          ?.readContentAsText();
+      if (content != null) {
+        sections.add(_getSectionFromContent(content));
+      }
     }
 
     return sections;
@@ -90,8 +117,11 @@ class EpubTome extends Tome {
     _log.fine('get content for $filePath');
 
     final chapters = await _epubBookRef!.getChapters();
+    var sections = await _getSectionsFromChapters(chapters);
 
-    final sections = await _getSections(chapters);
+    if (sections.isEmpty) {
+      sections = await _getSectionsFromSpineItems();
+    }
 
     final images = <String, List<int>>{};
 
