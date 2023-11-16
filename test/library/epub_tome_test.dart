@@ -50,10 +50,10 @@ void main() {
     test('Read content', () async {
       await tome!.open();
       final content = await tome!.content;
-      expect(content.sections.length, 6);
+      expect(content.sections.length, 3);
       for (final section in content.sections) {
         expect(section.html, isNotEmpty);
-        expect(section.html, contains('<html'));
+        expect(section.html, contains('<p'));
       }
     });
   });
