@@ -33,7 +33,7 @@ dependencies:
       ref: 4f8d2a89ef44f2e5629b0955872a28b0afabe51a
   flutter_localizations:
     sdk: flutter
-  flutter_riverpod: ^2.4.4
+  flutter_riverpod: ^2.4.7
   freezed_annotation: ^2.4.1
   go_router: ^12.0.0
   html: ^0.15.4
