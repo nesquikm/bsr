@@ -58,7 +58,7 @@ dev_dependencies:
   freezed: ^2.4.5
   io: ^1.0.4
   json_serializable: ^6.7.1
-  melos: ^3.1.1
+  melos: ^4.0.0
   riverpod_generator: ^2.3.3
   riverpod_lint: ^2.1.1
   very_good_analysis: ^5.1.0
